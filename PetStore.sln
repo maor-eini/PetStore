@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AB52DEFA-2645-488A-8999-3E6CF4910083}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E6D0132C-FD31-410F-8815-21B65FF23B16}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "PetStore", "src\PetStore\PetStore.xproj", "{615D2B97-31E2-4667-9C61-4BC21B535396}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{615D2B97-31E2-4667-9C61-4BC21B535396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615D2B97-31E2-4667-9C61-4BC21B535396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615D2B97-31E2-4667-9C61-4BC21B535396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615D2B97-31E2-4667-9C61-4BC21B535396}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{615D2B97-31E2-4667-9C61-4BC21B535396} = {AB52DEFA-2645-488A-8999-3E6CF4910083}
+	EndGlobalSection
+EndGlobal
