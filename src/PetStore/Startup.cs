@@ -1,42 +1,45 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetStore.Models;
+using System.IO;
 
 namespace PetStore
 {
     public class Startup
     {
-        public IHostingEnvironment hostingEnvironment { get; private set; }
+        public IHostingEnvironment HostingEnvironment { get; private set; }
         public IConfiguration Configuration { get; private set; }
 
         public Startup(IHostingEnvironment hostingEnvironment)
         {
-            this.hostingEnvironment = hostingEnvironment;
-        }
+            this.HostingEnvironment = hostingEnvironment;
 
-        private void ConfigureSettings(IServiceCollection services)
-        {
-            var Configuration = new ConfigurationBuilder()
-                .AddJsonFile("PetStoreSettings.json")
-                .Build();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("PetStoreSettings.json");
 
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<PetStoreDB>(options => options
-                 .UseSqlServer(Configuration["ConnectionStrings: DefaultConnection"]));
+            Configuration = builder.Build();
 
         }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcCore();
 
-            ConfigureSettings(services);
+            services.AddEntityFrameworkSqlServer()
+                    .AddDbContext<PetStoreContext>(options => options
+                    .UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            services.AddIdentity<User, IdentityRole>()
+                    .AddEntityFrameworkStores<PetStoreContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +60,8 @@ namespace PetStore
             app.UseFileServer();
 
             app.UseStatusCodePages();
+
+            app.UseIdentity();
 
             // Enable Mvc routes
             app.UseMvc(routes =>
