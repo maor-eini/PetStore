@@ -1,0 +1,74 @@
+﻿.collapse {
+    display: flex;
+}
+
+.user-menu {
+    margin-right: 20px;
+}
+
+    .user-menu li {
+        padding: 10px 10px;
+        font-size: medium;
+        color: #424953;
+    }
+
+.user-menu-link {
+    text-decoration: none;
+    color: #424953;
+}
+
+    .user-menu-link:hover {
+        color: white;
+    }
+
+/*****LOGO PANEL*****/
+
+.logo-panel {
+    height: 125px;
+    background: #bfebdc;
+}
+
+.logo {
+    height: 125px;
+    width: 350px;
+}
+
+/*****NAVIGATION*****/
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.navbar-default {
+    background-color: #fed964;
+}
+
+/*****FOOTER*****/
+
+footer {
+    height: 130px;
+    background-color: #1b9ca2;
+}
+
+    footer .container {
+        padding: 25px;
+    }
+
+.footer-nav-title {
+    color: white;
+    font-size: medium;
+    font-weight: 700;
+    padding-bottom: 5px;
+}
+
+footer .container li a {
+    color: white;
+    font-size: small;
+}
+
+/*POPULAR PRODUCTS*/
+
+.product-container{
+    border: 1px solid grey;
+    margin:20px;
+}
