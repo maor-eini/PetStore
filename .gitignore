@@ -245,3 +245,4 @@ ModelManifest.xml
 .fake/
 /src/PetStore/wwwroot/lib/jquery
 /src/PetStore/wwwroot/lib/bootstrap
+/src/PetStore/wwwroot/lib/normalize
