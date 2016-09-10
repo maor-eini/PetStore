@@ -44,7 +44,7 @@ namespace PetStore
                     .AddDbContext<PetStoreContext>(options => options
                     .UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
-            services.AddMvcCore();
+            services.AddMvc();
 
         }
 
@@ -53,7 +53,7 @@ namespace PetStore
         {
             //loggerFactory.AddConsole();
 
-            app.UseWelcomePage();
+            //app.UseWelcomePage();
 
             if (env.IsDevelopment())
             {
@@ -63,16 +63,16 @@ namespace PetStore
             }
 
             // Enable serving default and static files
-            app.UseFileServer();
+            app.UseStaticFiles();
 
             app.UseStatusCodePages();
 
-            app.UseIdentity();
+            //app.UseIdentity();
 
             // Enable Mvc routes
             app.UseMvc(routes =>
             {
-                routes.MapRoute("areaRoute", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+                //routes.MapRoute("areaRoute", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
 
                 routes.MapRoute(
                     name: "default",
@@ -80,10 +80,10 @@ namespace PetStore
             });
 
 
-            app.Run(async (context) =>
+            /*app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");
-            });
+            });*/
         }
     }
 }
