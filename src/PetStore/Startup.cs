@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,21 +31,38 @@ namespace PetStore
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
         {
 
-            services.AddIdentity<UserAccount, IdentityRole>(config =>
+            services.AddIdentity<UserAccount, UserRole>(config =>
             {
                 config.User.RequireUniqueEmail = true;
                 config.Password.RequiredLength = 8;
             })
-            .AddEntityFrameworkStores<PetStoreContext>();
+            .AddEntityFrameworkStores<PetStoreContext,int>()
+            .AddDefaultTokenProviders()
+            .AddUserStore<UserStore<UserAccount, UserRole, PetStoreContext, int>>()
+            .AddRoleStore<RoleStore<UserRole, PetStoreContext, int>>();
+
+            //services.ConfigreCookieAuthentication()
 
             services.AddEntityFrameworkSqlServer()
                     .AddDbContext<PetStoreContext>(options => options
                     .UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
-            services.AddMvc();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddMvc(config=> 
+            {
+                if (env.IsProduction())
+                {
+                    config.Filters.Add(new RequireHttpsAttribute());
+                }
+            })
+            .AddJsonOptions(option=> 
+            {
+                //TODO: Set CamelCase on.
+            });
 
         }
 
@@ -53,7 +71,7 @@ namespace PetStore
         {
             //loggerFactory.AddConsole();
 
-            //app.UseWelcomePage();
+            app.UseWelcomePage();
 
             if (env.IsDevelopment())
             {
