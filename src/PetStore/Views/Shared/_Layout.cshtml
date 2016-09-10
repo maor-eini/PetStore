@@ -3,28 +3,124 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/lib/yamm3/yamm/yamm.css" rel="stylesheet">
+    <link href="~/css/navigation.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/fonts/font-awesome-4.6.3/css/font-awesome.min.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <title>@ViewBag.Title</title>
 </head>
 <body>
     <header>
-        <div class="user-menu">
-            <ul class="userPanelCategories">
-                <li class="userPanelCategory">Login</li>
-                <li class="userPanelCategory">Sign Up</li>
-                <li class="userPanelCategory">View Cart</li>
+        <div class="logo-panel">
+            <ul class="user-menu pull-right list-unstyled list-inline">
+                <li class="pull-left">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <a class="user-menu-link" href="#">My Account</a>
+                </li>
+                <li class="pull-left">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <a class="user-menu-link" href="#">View Cart</a>
+                </li>
             </ul>
+            <img class="logo" src="~/img/layout/logo.jpg" alt="Pet Store" />
         </div>
-        <div class="logo-container">
-            <img src="" alt="Pet Store"/>
-            <span class="storePhone">03-000000</span>
+        <div class="navbar yamm navbar-default">
+            <div class="container">
+                <div id="navbar-collapse-1" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Classic list -->
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">DOGS<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <!-- Content container to add padding -->
+                                    <div class="yamm-content">
+                                        <div class="row">
+                                            <ul class="col-md-3 list-unstyled">
+                                                <li>
+                                                    <p><strong>Food</strong></p>
+                                                </li>
+                                                <li><a href="#"> Dog Food </a></li>
+                                                <li><a href="#"> Bowls, Feeders, &amp; Waterers </a></li>
+                                            </ul>
+                                            <ul class="col-md-3 list-unstyled">
+                                                <li>
+                                                    <p><strong>Bedding</strong></p>
+                                                </li>
+                                                <li><a href="#"> Dog Beds </a></li>
+                                                <li><a href="#"> Dog Crates &amp; Kennels </a></li>
+                                                <li><a href="#"> Dog Doors &amp; Gates </a></li>
+                                                <li><a href="#"> Dog Houses </a></li>
+                                                <li><a href="#"> Travel &amp; Outdoors </a></li>
+                                            </ul>
+                                            <ul class="col-md-3 list-unstyled">
+                                                <li>
+                                                    <p><strong>Health</strong></p>
+                                                </li>
+                                                <li><a href="#"> Flea &amp; Tick </a></li>
+                                                <li><a href="#"> Clean Up, Stain &amp; Odor Control </a></li>
+                                                <li><a href="#"> Health Care, Supplements &amp; Nutrition </a></li>
+                                            </ul>
+                                            <ul class="col-md-3 list-unstyled">
+                                                <li>
+                                                    <p><strong>Training</strong></p>
+                                                </li>
+                                                <li><a href="#"> Dog Collars, Leashes &amp; Harnesses </a></li>
+                                                <li><a href="#"> Toys </a></li>
+                                                <li><a href="#"> Treats &amp; Snacks </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">CATS<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <!-- Content container to add padding -->
+                                    <div class="yamm-content">
+                                        <div class="row">
+                                            <ul class="col-md-4 list-unstyled">
+                                                <li>
+                                                    <p><strong>Food</strong></p>
+                                                </li>
+                                                <li><a href="#"> Cat Food </a></li>
+                                                <li><a href="#"> Bowls, Feeders, &amp; Waterers </a></li>
+                                                <li><a href="#"> Treats &amp; Snacks </a></li>
+                                                <li><a href="#"> Health Care, Supplements &amp; Nutrition </a></li>
+
+
+                                            </ul>
+                                            <ul class="col-md-4 list-unstyled">
+                                                <li>
+                                                    <p><strong>Bedding</strong></p>
+                                                </li>
+                                                <li><a href="#"> Cat Beds </a></li>
+                                                <li><a href="#"> Cat Furniture &amp; Scratchers </a></li>
+                                            </ul>
+                                            <ul class="col-md-4 list-unstyled">
+                                                <li>
+                                                    <p><strong>Health &amp; Life style</strong></p>
+                                                </li>
+                                                <li><a href="#"> Flea &amp; Tick </a></li>
+                                                <li><a href="#"> Clean Up, Stain &amp; Odor Control </a></li>
+                                                <li><a href="#"> Toys </a></li>
+                                                <li><a href="#"> Grooming </a></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
         </div>
-        <nav class="navigation">
-            <ul class="nav nav-tabs">
-                <li role="presentation" class="active"><a href="#">Home</a></li>
-                <li role="presentation"><a href="#">Profile</a></li>
-                <li role="presentation"><a href="#">Messages</a></li>
-            </ul>
-        </nav>
     </header>
     <div>
         @RenderBody()
