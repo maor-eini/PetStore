@@ -8,9 +8,10 @@ using PetStore.Data;
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    partial class PetStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20160910130133_AddOrderStatusModel")]
+    partial class AddOrderStatusModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("ApplicationData")

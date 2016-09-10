@@ -12,6 +12,7 @@ namespace PetStore.Models
         public DateTime ShippedDate { get; set; }
         public string ShippingAddressId { get; set; }
         public UserAddress ShippingAddress { get; set; }
+        public string StatusId { get; set; }
         public OrderStatus Status { get; set; }
         public ICollection<OrderItem> Products { get; set; }
     }

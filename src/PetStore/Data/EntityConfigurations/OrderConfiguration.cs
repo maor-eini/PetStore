@@ -19,6 +19,20 @@ namespace PetStore.EntityConfigurations
                 .HasForeignKey(o => o.ShippingAddressId)
                 .HasPrincipalKey(uadd => uadd.Id)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            b.HasOne(o => o.Status)
+                .WithMany(os => os.Orders)
+                .HasForeignKey(o => o.StatusId)
+                .HasPrincipalKey(os => os.Id)
+                .OnDelete(DeleteBehavior.SetNull);
+        }
+
+        public static void ConfigureOrderStatus(this EntityTypeBuilder<OrderStatus> b)
+        {
+            b.ToTable("OrderStatus", "Order");
+
+            b.HasKey(os => os.Id);
+
         }
 
         public static void ConfigureOrdersItem(this EntityTypeBuilder<OrderItem> b)
