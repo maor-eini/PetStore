@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PetStore.EntityConfigurations;
 
 namespace PetStore.Models
 {
-    public class PetStoreContext : IdentityDbContext
+    public class PetStoreContext : IdentityDbContext<UserAccount>
     {
         public PetStoreContext(DbContextOptions<PetStoreContext> options)
             :base(options)
@@ -16,33 +17,56 @@ namespace PetStore.Models
    
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityUser>()
-                .ToTable("Users")
-                .Property(p => p.Id)
-                .HasColumnName("UserId");
+            builder.HasDefaultSchema("ApplicationData");
 
-            builder.Entity<User>()
-                .ToTable("Users")
-                .Property(p => p.Id)
-                .HasColumnName("UserId");
+            builder.Entity<IdentityUser>().ConfigureIdentityUser();
 
-            builder.Entity<IdentityRole>()
-                .ToTable("Users.Roles");
+            builder.Entity<IdentityRole>().ConfigureIdentityRole();
 
-            builder.Entity<IdentityUserRole<string>>()
-                .ToTable("Users.UserRoles");
+            builder.Entity<IdentityUserRole<string>>().ConfigureIdentityUserRole();
 
-            builder.Entity<IdentityUserLogin<string>>()
-                .ToTable("Users.UserLogins");
+            builder.Entity<IdentityUserLogin<string>>().ConfigureIdentityUserLogin();
 
-            builder.Entity<IdentityUserToken<string>>()
-                .ToTable("Users.UserTokens");
+            builder.Entity<IdentityUserToken<string>>().ConfigureIdentityUserToken();
 
-            builder.Entity<IdentityUserClaim<string>>()
-                .ToTable("Users.UserClaims");
+            builder.Entity<IdentityUserClaim<string>>().ConfigureIdentityUserClaim();
 
-            builder.Entity<IdentityRoleClaim<string>>()
-                .ToTable("Users.RoleClaims");
+            builder.Entity<IdentityRoleClaim<string>>().ConfigureIdentityRoleClaim();
+
+
+            builder.Entity<UserAccount>().ConfigureUser();
+
+            builder.Entity<UserAddress>().ConfigureUserAddress();
+
+            builder.Entity<UserImage>().ConfigureUserImage();
+
+
+            builder.Entity<Product>().ConfigureProduct();
+
+            builder.Entity<ProductImage>().ConfigureProductImage();
+
+            builder.Entity<ProductCategory>().ConfigureProductCategory();
+
+            builder.Entity<ProductTag>().ConfigureProductTag();
+
+
+            builder.Entity<Order>().ConfigureOrder();
+
+            builder.Entity<OrderItem>().ConfigureOrdersItem();
+
+
+            builder.Entity<Provider>().ConfigureProvider();
+
+            builder.Entity<ProviderItem>().ConfigureProviderItem();
+
+
+            builder.Entity<ShoppingCart>().ConfigureShoppingCart();
+
+            builder.Entity<ShoppingCartItem>().ConfigureShoppingCartItem();
+
+
+
+
         }
     }
 }
