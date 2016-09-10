@@ -6,6 +6,26 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
+    <header>
+        <div class="user-menu">
+            <ul class="userPanelCategories">
+                <li class="userPanelCategory">Login</li>
+                <li class="userPanelCategory">Sign Up</li>
+                <li class="userPanelCategory">View Cart</li>
+            </ul>
+        </div>
+        <div class="logo-container">
+            <img src="" alt="Pet Store"/>
+            <span class="storePhone">03-000000</span>
+        </div>
+        <nav class="navigation">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#">Home</a></li>
+                <li role="presentation"><a href="#">Profile</a></li>
+                <li role="presentation"><a href="#">Messages</a></li>
+            </ul>
+        </nav>
+    </header>
     <div>
         @RenderBody()
     </div>
