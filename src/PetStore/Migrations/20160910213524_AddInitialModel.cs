@@ -511,7 +511,7 @@ namespace PetStore.Migrations
                         principalSchema: "ApplicationData",
                         principalTable: "OrderStatus",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_Accounts_UserAccountId",
                         column: x => x.UserAccountId,

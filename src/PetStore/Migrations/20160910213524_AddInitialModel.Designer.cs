@@ -8,7 +8,7 @@ using PetStore.Data;
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    [Migration("20160910210329_AddInitialModel")]
+    [Migration("20160910213524_AddInitialModel")]
     partial class AddInitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -518,8 +518,7 @@ namespace PetStore.Migrations
 
                     b.HasOne("PetStore.Models.OrderStatus", "Status")
                         .WithMany("Orders")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("StatusId");
 
                     b.HasOne("PetStore.Models.UserAccount")
                         .WithMany("Orders")

@@ -517,8 +517,7 @@ namespace PetStore.Migrations
 
                     b.HasOne("PetStore.Models.OrderStatus", "Status")
                         .WithMany("Orders")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("StatusId");
 
                     b.HasOne("PetStore.Models.UserAccount")
                         .WithMany("Orders")

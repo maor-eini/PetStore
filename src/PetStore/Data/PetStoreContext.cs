@@ -51,6 +51,9 @@ namespace PetStore.Data
             builder.Entity<UserImage>().ConfigureUserImage();
 
 
+            builder.Entity<Pet>().ConfigurePet();
+
+
             builder.Entity<Product>().ConfigureProduct();
 
             builder.Entity<ProductImage>().ConfigureProductImage();
@@ -63,6 +66,8 @@ namespace PetStore.Data
             builder.Entity<Order>().ConfigureOrder();
 
             builder.Entity<OrderItem>().ConfigureOrdersItem();
+
+            builder.Entity<OrderStatus>().ConfigureOrderStatus();
 
 
             builder.Entity<Provider>().ConfigureProvider();

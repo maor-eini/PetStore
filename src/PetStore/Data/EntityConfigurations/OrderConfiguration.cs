@@ -24,7 +24,7 @@ namespace PetStore.EntityConfigurations
                 .WithMany(os => os.Orders)
                 .HasForeignKey(o => o.StatusId)
                 .HasPrincipalKey(os => os.Id)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         public static void ConfigureOrderStatus(this EntityTypeBuilder<OrderStatus> b)

@@ -19,5 +19,12 @@ namespace PetStore.EntityConfigurations
                 .HasPrincipalKey(pt => pt.Id)
                 .OnDelete(DeleteBehavior.SetNull);
         }
+
+        public static void ConfigurePetType(this EntityTypeBuilder<PetType> b)
+        {
+            b.ToTable("Pets", "PetTypes");
+
+            b.HasKey(p => p.Id);
+        }
     }
 }

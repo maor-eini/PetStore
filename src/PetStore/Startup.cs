@@ -31,7 +31,7 @@ namespace PetStore
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
+        public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddIdentity<UserAccount, UserRole>(config =>
@@ -54,10 +54,7 @@ namespace PetStore
 
             services.AddMvc(config=> 
             {
-                if (env.IsProduction())
-                {
-                    config.Filters.Add(new RequireHttpsAttribute());
-                }
+                //config.Filters.Add(new RequireHttpsAttribute()); //TODO: Wrap with env.IsProduction=true
             })
             .AddJsonOptions(option=> 
             {
@@ -71,7 +68,7 @@ namespace PetStore
         {
             //loggerFactory.AddConsole();
 
-            app.UseWelcomePage();
+            //app.UseWelcomePage();
 
             if (env.IsDevelopment())
             {
@@ -85,7 +82,7 @@ namespace PetStore
 
             app.UseStatusCodePages();
 
-            //app.UseIdentity();
+            app.UseIdentity();
 
             // Enable Mvc routes
             app.UseMvc(routes =>
