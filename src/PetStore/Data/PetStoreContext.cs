@@ -5,7 +5,7 @@ using PetStore.Models;
 
 namespace PetStore.Data
 {
-    public class PetStoreContext : IdentityDbContext<UserAccount>
+    public class PetStoreContext : IdentityDbContext<UserAccount, UserRole , int>
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
@@ -22,7 +22,6 @@ namespace PetStore.Data
         public PetStoreContext(DbContextOptions<PetStoreContext> options)
             :base(options)
         {
-            
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -32,17 +31,17 @@ namespace PetStore.Data
 
             builder.HasDefaultSchema("ApplicationData");
 
-            builder.Entity<IdentityRole>().ConfigureIdentityRole();
+            builder.Entity<UserRole>().ConfigureUserRole();
 
-            builder.Entity<IdentityUserRole<string>>().ConfigureIdentityUserRole();
+            builder.Entity<IdentityUserRole<int>>().ConfigureIdentityUserRole();
 
-            builder.Entity<IdentityUserLogin<string>>().ConfigureIdentityUserLogin();
+            builder.Entity<IdentityUserLogin<int>>().ConfigureIdentityUserLogin();
 
-            builder.Entity<IdentityUserToken<string>>().ConfigureIdentityUserToken();
+            builder.Entity<IdentityUserToken<int>>().ConfigureIdentityUserToken();
 
-            builder.Entity<IdentityUserClaim<string>>().ConfigureIdentityUserClaim();
+            builder.Entity<IdentityUserClaim<int>>().ConfigureIdentityUserClaim();
 
-            builder.Entity<IdentityRoleClaim<string>>().ConfigureIdentityRoleClaim();
+            builder.Entity<IdentityRoleClaim<int>>().ConfigureIdentityRoleClaim();
 
 
             builder.Entity<UserAccount>().ConfigureUser();

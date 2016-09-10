@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace PetStore.Migrations
 {
-    public partial class AddInitialStoreModel : Migration
+    public partial class AddInitialModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,26 +25,11 @@ namespace PetStore.Migrations
                 name: "Provider");
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                schema: "User",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserTokens",
                 schema: "User",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -54,11 +40,26 @@ namespace PetStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderStatus",
+                schema: "ApplicationData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PetType",
                 schema: "ApplicationData",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -71,17 +72,17 @@ namespace PetStore.Migrations
                 schema: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    SubCategoryId = table.Column<int>(nullable: true),
-                    SubCategoryId1 = table.Column<string>(nullable: true)
+                    SubCategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Category", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Category_Category_SubCategoryId1",
-                        column: x => x.SubCategoryId1,
+                        name: "FK_Category_Category_SubCategoryId",
+                        column: x => x.SubCategoryId,
                         principalSchema: "Product",
                         principalTable: "Category",
                         principalColumn: "Id",
@@ -93,7 +94,8 @@ namespace PetStore.Migrations
                 schema: "Provider",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(nullable: true),
                     ProviderName = table.Column<string>(nullable: true)
                 },
@@ -107,7 +109,8 @@ namespace PetStore.Migrations
                 schema: "User",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     DateAdded = table.Column<DateTime>(nullable: false),
@@ -116,7 +119,7 @@ namespace PetStore.Migrations
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 255, nullable: true),
                     Gender = table.Column<string>(maxLength: 1, nullable: true),
-                    ImageId = table.Column<string>(nullable: true),
+                    ImageId = table.Column<int>(nullable: false),
                     IsActive = table.Column<string>(maxLength: 1, nullable: true),
                     LastName = table.Column<string>(maxLength: 255, nullable: true),
                     LastUpdated = table.Column<DateTime>(nullable: false),
@@ -130,7 +133,7 @@ namespace PetStore.Migrations
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     SecurityStamp = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserAddressesId = table.Column<string>(nullable: true),
+                    UserAddressesId = table.Column<int>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true)
                 },
                 constraints: table =>
@@ -139,26 +142,19 @@ namespace PetStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleClaims",
+                name: "Roles",
                 schema: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    RoleId = table.Column<string>(nullable: false)
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoleClaims_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "User",
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,8 +162,9 @@ namespace PetStore.Migrations
                 schema: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    CategoryId = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CategoryId = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     Manufacturer = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
@@ -195,7 +192,7 @@ namespace PetStore.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -217,7 +214,7 @@ namespace PetStore.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,12 +229,140 @@ namespace PetStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Pet",
+                schema: "ApplicationData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Size = table.Column<string>(nullable: true),
+                    TypeId = table.Column<int>(nullable: false),
+                    UserAccountId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pet", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pet_PetType_TypeId",
+                        column: x => x.TypeId,
+                        principalSchema: "ApplicationData",
+                        principalTable: "PetType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pet_Accounts_UserAccountId",
+                        column: x => x.UserAccountId,
+                        principalSchema: "User",
+                        principalTable: "Accounts",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                schema: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    UserAccountId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Accounts_UserAccountId",
+                        column: x => x.UserAccountId,
+                        principalSchema: "User",
+                        principalTable: "Accounts",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                schema: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApartmentNumber = table.Column<string>(nullable: true),
+                    BuildingNumber = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    IsDefaultBillingAddress = table.Column<string>(nullable: true),
+                    IsDefaultShippingAddress = table.Column<string>(nullable: true),
+                    Province = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    Street = table.Column<string>(nullable: true),
+                    UserAccountId = table.Column<int>(nullable: false),
+                    ZipCode = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Accounts_UserAccountId",
+                        column: x => x.UserAccountId,
+                        principalSchema: "User",
+                        principalTable: "Accounts",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                schema: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Image = table.Column<byte[]>(nullable: true),
+                    UserAccountId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Images_Accounts_UserAccountId",
+                        column: x => x.UserAccountId,
+                        principalSchema: "User",
+                        principalTable: "Accounts",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleClaims",
+                schema: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true),
+                    RoleId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoleClaims_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "User",
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRoles",
                 schema: "User",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -259,112 +384,11 @@ namespace PetStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pet",
-                schema: "ApplicationData",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Size = table.Column<string>(nullable: true),
-                    TypeId = table.Column<string>(nullable: true),
-                    UserAccountId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Pet", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Pet_PetType_TypeId",
-                        column: x => x.TypeId,
-                        principalSchema: "ApplicationData",
-                        principalTable: "PetType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Pet_Accounts_UserAccountId",
-                        column: x => x.UserAccountId,
-                        principalSchema: "User",
-                        principalTable: "Accounts",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShoppingCarts",
-                schema: "User",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    DateCreated = table.Column<DateTime>(nullable: false),
-                    UserAccountId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ShoppingCarts_Accounts_UserAccountId",
-                        column: x => x.UserAccountId,
-                        principalSchema: "User",
-                        principalTable: "Accounts",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                schema: "User",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    ApartmentNumber = table.Column<string>(nullable: true),
-                    BuildingNumber = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    IsDefaultBillingAddress = table.Column<string>(nullable: true),
-                    IsDefaultShippingAddress = table.Column<string>(nullable: true),
-                    Province = table.Column<string>(nullable: true),
-                    State = table.Column<string>(nullable: true),
-                    Street = table.Column<string>(nullable: true),
-                    UserAccountId = table.Column<string>(nullable: false),
-                    ZipCode = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Accounts_UserAccountId",
-                        column: x => x.UserAccountId,
-                        principalSchema: "User",
-                        principalTable: "Accounts",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Images",
-                schema: "User",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Image = table.Column<byte[]>(nullable: true),
-                    UserAccountId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Images_Accounts_UserAccountId",
-                        column: x => x.UserAccountId,
-                        principalSchema: "User",
-                        principalTable: "Accounts",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Images",
                 schema: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
                     Image = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
@@ -384,8 +408,9 @@ namespace PetStore.Migrations
                 schema: "Product",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    ProductId = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ProductId = table.Column<int>(nullable: false),
                     Tag = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -405,8 +430,8 @@ namespace PetStore.Migrations
                 schema: "Provider",
                 columns: table => new
                 {
-                    ProductId = table.Column<string>(nullable: false),
-                    ProviderId = table.Column<string>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    ProviderId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -433,8 +458,8 @@ namespace PetStore.Migrations
                 schema: "User",
                 columns: table => new
                 {
-                    ShoppingCartId = table.Column<string>(nullable: false),
-                    ProductId = table.Column<string>(nullable: false),
+                    ShoppingCartId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -461,13 +486,14 @@ namespace PetStore.Migrations
                 schema: "Order",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     OrderedDate = table.Column<DateTime>(nullable: false),
                     ShippedDate = table.Column<DateTime>(nullable: false),
-                    ShippingAddressId = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false),
+                    ShippingAddressId = table.Column<int>(nullable: false),
+                    StatusId = table.Column<int>(nullable: false),
                     TotalPrice = table.Column<double>(nullable: false),
-                    UserAccountId = table.Column<string>(nullable: true)
+                    UserAccountId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -480,12 +506,19 @@ namespace PetStore.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_Orders_OrderStatus_StatusId",
+                        column: x => x.StatusId,
+                        principalSchema: "ApplicationData",
+                        principalTable: "OrderStatus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
                         name: "FK_Orders_Accounts_UserAccountId",
                         column: x => x.UserAccountId,
                         principalSchema: "User",
                         principalTable: "Accounts",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -493,8 +526,8 @@ namespace PetStore.Migrations
                 schema: "Order",
                 columns: table => new
                 {
-                    OrderId = table.Column<string>(nullable: false),
-                    ProductId = table.Column<string>(nullable: false),
+                    OrderId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -515,12 +548,6 @@ namespace PetStore.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                schema: "User",
-                table: "Roles",
-                column: "NormalizedName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
@@ -557,6 +584,12 @@ namespace PetStore.Migrations
                 schema: "Order",
                 table: "Orders",
                 column: "ShippingAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_StatusId",
+                schema: "Order",
+                table: "Orders",
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserAccountId",
@@ -596,10 +629,10 @@ namespace PetStore.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Category_SubCategoryId1",
+                name: "IX_Category_SubCategoryId",
                 schema: "Product",
                 table: "Category",
-                column: "SubCategoryId1");
+                column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_Id",
@@ -669,6 +702,12 @@ namespace PetStore.Migrations
                 table: "Images",
                 column: "UserAccountId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                schema: "User",
+                table: "Roles",
+                column: "NormalizedName");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -748,6 +787,10 @@ namespace PetStore.Migrations
             migrationBuilder.DropTable(
                 name: "Addresses",
                 schema: "User");
+
+            migrationBuilder.DropTable(
+                name: "OrderStatus",
+                schema: "ApplicationData");
 
             migrationBuilder.DropTable(
                 name: "Category",

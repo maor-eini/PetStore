@@ -4,7 +4,7 @@ namespace PetStore.Models
 {
     public class UserAddress
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Street { get; set; }
         public string BuildingNumber { get; set; }
         public string ApartmentNumber { get; set; }
@@ -16,7 +16,7 @@ namespace PetStore.Models
         public string IsDefaultShippingAddress { get; set; }
 
         public ICollection<Order> Orders { get; set; }
-        public string UserAccountId { get; set; }
+        public int UserAccountId { get; set; }
         public UserAccount UserAccount { get; set; }
 
     }

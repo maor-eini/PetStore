@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PetStore.Models
 {
-    public class UserAccount : IdentityUser
+    public class UserAccount : IdentityUser<int>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -19,10 +19,10 @@ namespace PetStore.Models
         public ICollection<Order> Orders { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
 
-        public string UserAddressesId { get; set; }
+        public int UserAddressesId { get; set; }
         public ICollection<UserAddress> UserAddresses { get; set; }
 
-        public string ImageId { get; set; }
+        public int ImageId { get; set; }
         public UserImage Image { get; set; }
 
 

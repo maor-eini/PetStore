@@ -8,8 +8,8 @@ using PetStore.Data;
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    [Migration("20160910130133_AddOrderStatusModel")]
-    partial class AddOrderStatusModel
+    [Migration("20160910210329_AddInitialModel")]
+    partial class AddInitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,28 +18,7 @@ namespace PetStore.Migrations
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
-                {
-                    b.Property<string>("Id");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
-
-                    b.Property<string>("Name")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasAnnotation("MaxLength", 256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .HasName("RoleNameIndex");
-
-                    b.ToTable("Roles","User");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -48,8 +27,7 @@ namespace PetStore.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired();
+                    b.Property<int>("RoleId");
 
                     b.HasKey("Id");
 
@@ -58,7 +36,7 @@ namespace PetStore.Migrations
                     b.ToTable("RoleClaims","User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -67,8 +45,7 @@ namespace PetStore.Migrations
 
                     b.Property<string>("ClaimValue");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -77,7 +54,7 @@ namespace PetStore.Migrations
                     b.ToTable("UserClaims","User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider");
 
@@ -85,8 +62,7 @@ namespace PetStore.Migrations
 
                     b.Property<string>("ProviderDisplayName");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<int>("UserId");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -95,11 +71,11 @@ namespace PetStore.Migrations
                     b.ToTable("UserLogins","User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<int>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
-                    b.Property<string>("RoleId");
+                    b.Property<int>("RoleId");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -110,9 +86,9 @@ namespace PetStore.Migrations
                     b.ToTable("UserRoles","User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserToken<int>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.Property<string>("LoginProvider");
 
@@ -127,19 +103,20 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.Order", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("OrderedDate");
 
                     b.Property<DateTime>("ShippedDate");
 
-                    b.Property<string>("ShippingAddressId");
+                    b.Property<int>("ShippingAddressId");
 
-                    b.Property<string>("StatusId");
+                    b.Property<int>("StatusId");
 
                     b.Property<double>("TotalPrice");
 
-                    b.Property<string>("UserAccountId");
+                    b.Property<int>("UserAccountId");
 
                     b.HasKey("Id");
 
@@ -154,9 +131,9 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.OrderItem", b =>
                 {
-                    b.Property<string>("OrderId");
+                    b.Property<int>("OrderId");
 
-                    b.Property<string>("ProductId");
+                    b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
 
@@ -171,7 +148,8 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.OrderStatus", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
@@ -182,15 +160,16 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.Pet", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
                     b.Property<string>("Size");
 
-                    b.Property<string>("TypeId");
+                    b.Property<int>("TypeId");
 
-                    b.Property<string>("UserAccountId");
+                    b.Property<int>("UserAccountId");
 
                     b.HasKey("Id");
 
@@ -203,7 +182,8 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.PetType", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
@@ -214,10 +194,10 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.Product", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CategoryId")
-                        .IsRequired();
+                    b.Property<int>("CategoryId");
 
                     b.Property<string>("Description");
 
@@ -239,24 +219,23 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.ProductCategory", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
                     b.Property<int?>("SubCategoryId");
 
-                    b.Property<string>("SubCategoryId1");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SubCategoryId1");
+                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("Category","Product");
                 });
 
             modelBuilder.Entity("PetStore.Models.ProductImage", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id");
 
                     b.Property<byte[]>("Image");
 
@@ -269,10 +248,10 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.ProductTag", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ProductId")
-                        .IsRequired();
+                    b.Property<int>("ProductId");
 
                     b.Property<string>("Tag");
 
@@ -285,7 +264,8 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.Provider", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
 
@@ -298,9 +278,9 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.ProviderItem", b =>
                 {
-                    b.Property<string>("ProductId");
+                    b.Property<int>("ProductId");
 
-                    b.Property<string>("ProviderId");
+                    b.Property<int>("ProviderId");
 
                     b.Property<int>("Quantity");
 
@@ -315,11 +295,12 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.ShoppingCart", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("DateCreated");
 
-                    b.Property<string>("UserAccountId");
+                    b.Property<int>("UserAccountId");
 
                     b.HasKey("Id");
 
@@ -331,9 +312,9 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.ShoppingCartItem", b =>
                 {
-                    b.Property<string>("ShoppingCartId");
+                    b.Property<int>("ShoppingCartId");
 
-                    b.Property<string>("ProductId");
+                    b.Property<int>("ProductId");
 
                     b.Property<int>("Quantity");
 
@@ -348,7 +329,8 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.UserAccount", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("UserId");
 
                     b.Property<int>("AccessFailedCount");
@@ -371,7 +353,7 @@ namespace PetStore.Migrations
                     b.Property<string>("Gender")
                         .HasAnnotation("MaxLength", 1);
 
-                    b.Property<string>("ImageId");
+                    b.Property<int>("ImageId");
 
                     b.Property<string>("IsActive")
                         .HasAnnotation("MaxLength", 1);
@@ -403,7 +385,7 @@ namespace PetStore.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<string>("UserAddressesId");
+                    b.Property<int>("UserAddressesId");
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
@@ -422,7 +404,8 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.UserAddress", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ApartmentNumber");
 
@@ -440,8 +423,7 @@ namespace PetStore.Migrations
 
                     b.Property<string>("Street");
 
-                    b.Property<string>("UserAccountId")
-                        .IsRequired();
+                    b.Property<int>("UserAccountId");
 
                     b.Property<string>("ZipCode");
 
@@ -454,11 +436,12 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.UserImage", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<byte[]>("Image");
 
-                    b.Property<string>("UserAccountId");
+                    b.Property<int>("UserAccountId");
 
                     b.HasKey("Id");
 
@@ -468,15 +451,37 @@ namespace PetStore.Migrations
                     b.ToTable("Images","User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("PetStore.Models.UserRole", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken();
+
+                    b.Property<string>("Name")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasAnnotation("MaxLength", 256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .HasName("RoleNameIndex");
+
+                    b.ToTable("Roles","User");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<int>", b =>
+                {
+                    b.HasOne("PetStore.Models.UserRole")
                         .WithMany("Claims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<int>", b =>
                 {
                     b.HasOne("PetStore.Models.UserAccount")
                         .WithMany("Claims")
@@ -484,7 +489,7 @@ namespace PetStore.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<int>", b =>
                 {
                     b.HasOne("PetStore.Models.UserAccount")
                         .WithMany("Logins")
@@ -492,9 +497,9 @@ namespace PetStore.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
+                    b.HasOne("PetStore.Models.UserRole")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -518,7 +523,8 @@ namespace PetStore.Migrations
 
                     b.HasOne("PetStore.Models.UserAccount")
                         .WithMany("Orders")
-                        .HasForeignKey("UserAccountId");
+                        .HasForeignKey("UserAccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PetStore.Models.OrderItem", b =>
@@ -538,7 +544,8 @@ namespace PetStore.Migrations
                 {
                     b.HasOne("PetStore.Models.PetType", "Type")
                         .WithMany("Pets")
-                        .HasForeignKey("TypeId");
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PetStore.Models.UserAccount", "UserAccount")
                         .WithMany("Pets")
@@ -558,7 +565,7 @@ namespace PetStore.Migrations
                 {
                     b.HasOne("PetStore.Models.ProductCategory", "SubCategory")
                         .WithMany()
-                        .HasForeignKey("SubCategoryId1");
+                        .HasForeignKey("SubCategoryId");
                 });
 
             modelBuilder.Entity("PetStore.Models.ProductImage", b =>

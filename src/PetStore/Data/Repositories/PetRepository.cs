@@ -1,7 +1,5 @@
 ﻿using PetStore.Data.Repositories.Interfaces;
 using PetStore.Models;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace PetStore.Data.Repositories
 {
