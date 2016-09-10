@@ -1,6 +1,8 @@
-﻿namespace PetStore.Data.Repositories.Interfaces
+﻿using PetStore.Models;
+
+namespace PetStore.Data.Repositories.Interfaces
 {
-    public interface IShoppingCartRepository
+    public interface IShoppingCartRepository : IRepository<ShoppingCart>
     {
         
     }

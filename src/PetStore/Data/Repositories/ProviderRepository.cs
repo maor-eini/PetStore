@@ -5,11 +5,17 @@ using System.Linq;
 
 namespace PetStore.Data.Repositories
 {
-    public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
+
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
-        public ShoppingCartRepository(PetStoreContext context)
+        public ProductRepository(PetStoreContext context)
             : base(context)
         {
+        }
+
+        public IEnumerable<Product> GetTopSellingProduct(int count)
+        {
+            return PetStoreContext.Products.OrderByDescending(c => c.Price).Take(count).ToList();
         }
 
         public PetStoreContext PetStoreContext

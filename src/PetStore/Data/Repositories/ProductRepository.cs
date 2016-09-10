@@ -6,16 +6,11 @@ using System.Linq;
 namespace PetStore.Data.Repositories
 {
 
-    public class ProductRepository : Repository<Product>, IProductRepository
+    public class ProviderRepository : Repository<Provider>, IProviderRepository
     {
-        public ProductRepository(PetStoreContext context)
+        public ProviderRepository(PetStoreContext context)
             : base(context)
         {
-        }
-
-        public IEnumerable<Product> GetTopSellingProduct(int count)
-        {
-            return PetStoreContext.Products.OrderByDescending(c => c.Price).Take(count).ToList();
         }
 
         public PetStoreContext PetStoreContext

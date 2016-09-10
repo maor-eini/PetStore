@@ -1,18 +1,20 @@
-﻿using System;
+﻿using PetStore.Data.Repositories.Interfaces;
+using PetStore.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PetStore.Data.Repositories
 {
-    public class PetRepository
+    public class PetRepository : Repository<Pet>, IPetRepository
     {
-        private PetStoreContext _context;
-
-        public PetRepository(PetStoreContext _context)
+        public PetRepository(PetStoreContext context)
+            : base(context)
         {
-            this._context = _context;
+        }
+
+        public PetStoreContext PetStoreContext
+        {
+            get { return Context as PetStoreContext; }
         }
     }
 }

@@ -7,6 +7,9 @@ namespace PetStore.Data
     {
         IProductRepository Products { get; }
         IPetRepository Pets { get; }
+        IOrderRepository Orders { get; }
+        IProviderRepository Providers { get; }
+        IShoppingCartRepository ShoppingCarts { get; }
         int Complete();
     }
 }

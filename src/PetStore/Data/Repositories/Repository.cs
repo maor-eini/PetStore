@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 
@@ -9,45 +10,53 @@ namespace PetStore.Data.Repositories
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext Context;
+        private DbSet<TEntity> _entities;
 
         public Repository(DbContext context)
         {
             Context = context;
-        }
-
-        public void Add(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddRange(IEnumerable<TEntity> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
-        {
-            throw new NotImplementedException();
+            _entities = Context.Set<TEntity>();
         }
 
         public TEntity Get(int id)
         {
-            return Context.Set<TEntity>().Find(id);
+            return _entities.Find(id);
         }
 
         public IEnumerable<TEntity> GetAll()
         {
-            throw new NotImplementedException();
+            return _entities.ToList();
+        }
+
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _entities.Where(predicate);
+        }
+
+        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _entities.SingleOrDefault(predicate);
+        }
+
+        public void Add(TEntity entity)
+        {
+            _entities.Add(entity);
+        }
+
+        public void AddRange(IEnumerable<TEntity> entities)
+        {
+            _entities.AddRange(entities);
         }
 
         public void Remove(TEntity entity)
         {
-            throw new NotImplementedException();
+            _entities.Remove(entity);
         }
 
-        public void RemoveRange(TEntity entities)
+        public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            _entities.RemoveRange(entities);
         }
+
     }
 }
