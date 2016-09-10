@@ -68,7 +68,25 @@ footer .container li a {
 
 /*POPULAR PRODUCTS*/
 
+.popular-products-container{
+    display:inline-block;
+}
+
 .product-container{
     border: 1px solid grey;
     margin:20px;
+}
+
+.popular-products{
+    width: 100%;
+}
+
+.thumbnail{
+    display:inline-block;
+    margin:20px 10px
+}
+
+video{
+    width:600px;
+    margin:10px;
 }
