@@ -19,8 +19,6 @@ namespace PetStore.Models
 
             builder.HasDefaultSchema("ApplicationData");
 
-            builder.Entity<IdentityUser>().ConfigureIdentityUser();
-
             builder.Entity<IdentityRole>().ConfigureIdentityRole();
 
             builder.Entity<IdentityUserRole<string>>().ConfigureIdentityUserRole();

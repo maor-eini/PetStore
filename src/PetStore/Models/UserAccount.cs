@@ -11,10 +11,11 @@ namespace PetStore.Models
         public string Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PasswordOld { get; set; }
-        public bool IsActive { get; set; }
+        public string IsActive { get; set; }
         public DateTime DateAdded { get; set; }
         public DateTime LastUpdated { get; set; }
 
+        public ICollection<Pet> Pets { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
 

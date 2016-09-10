@@ -14,6 +14,18 @@ namespace PetStore.EntityConfigurations
                 .Property(p => p.Id)
                 .HasColumnName("UserId");
 
+            b.Property(ua => ua.FirstName)
+                .HasMaxLength(255);
+
+            b.Property(ua => ua.LastName)
+                .HasMaxLength(255);
+
+            b.Property(ua => ua.Gender)
+                 .HasMaxLength(1);
+
+            b.Property(ua => ua.IsActive)
+                .HasMaxLength(1);
+
             b.HasOne(ua => ua.Image)
                 .WithOne(ui => ui.UserAccount)
                 .HasForeignKey<UserImage>(ui => ui.UserAccountId)
@@ -31,6 +43,12 @@ namespace PetStore.EntityConfigurations
                 .WithOne(sc => sc.UserAccount)
                 .HasForeignKey<ShoppingCart>(sc => sc.UserAccountId)
                 .HasPrincipalKey<UserAccount>(ua => ua.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            b.HasMany(ua => ua.Pets)
+                .WithOne(p => p.UserAccount)
+                .HasForeignKey(p => p.UserAccountId)
+                .HasPrincipalKey(ua => ua.Id)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
