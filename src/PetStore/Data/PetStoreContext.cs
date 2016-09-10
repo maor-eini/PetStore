@@ -1,15 +1,28 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PetStore.EntityConfigurations;
+using PetStore.Models;
 
-namespace PetStore.Models
+namespace PetStore.Data
 {
     public class PetStoreContext : IdentityDbContext<UserAccount>
     {
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductTag> ProductTags { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<OrderStatus> OrderStatus { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public DbSet<Provider> Providers { get; set; }
+        public DbSet<ProviderItem> ProviderItems { get; set; }
+
         public PetStoreContext(DbContextOptions<PetStoreContext> options)
             :base(options)
         {
-
+            
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

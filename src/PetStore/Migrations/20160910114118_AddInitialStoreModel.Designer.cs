@@ -2,14 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using PetStore.Data;
 
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    partial class PetStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20160910114118_AddInitialStoreModel")]
+    partial class AddInitialStoreModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("ApplicationData")
@@ -133,7 +135,7 @@ namespace PetStore.Migrations
 
                     b.Property<string>("ShippingAddressId");
 
-                    b.Property<string>("StatusId");
+                    b.Property<int>("Status");
 
                     b.Property<double>("TotalPrice");
 
@@ -142,8 +144,6 @@ namespace PetStore.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ShippingAddressId");
-
-                    b.HasIndex("StatusId");
 
                     b.HasIndex("UserAccountId");
 
@@ -165,17 +165,6 @@ namespace PetStore.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems","Order");
-                });
-
-            modelBuilder.Entity("PetStore.Models.OrderStatus", b =>
-                {
-                    b.Property<string>("Id");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrderStatus");
                 });
 
             modelBuilder.Entity("PetStore.Models.Pet", b =>
@@ -508,11 +497,6 @@ namespace PetStore.Migrations
                     b.HasOne("PetStore.Models.UserAddress", "ShippingAddress")
                         .WithMany("Orders")
                         .HasForeignKey("ShippingAddressId");
-
-                    b.HasOne("PetStore.Models.OrderStatus", "Status")
-                        .WithMany("Orders")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("PetStore.Models.UserAccount")
                         .WithMany("Orders")

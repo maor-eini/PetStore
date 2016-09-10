@@ -1,11 +1,22 @@
-﻿namespace PetStore.Models
+﻿using System.Collections.Generic;
+
+namespace PetStore.Models
 {
-    public enum OrderStatus
+
+    public class OrderStatus
     {
-        New,
-        Hold,
-        Shipped,
-        Delivered,
-        Closed
+        public string Id { get; set; }
+        public string Name { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
     }
+
+    //public enum OrderStatus
+    //{
+    //    New,
+    //    Hold,
+    //    Shipped,
+    //    Delivered,
+    //    Closed
+    //}
 }
