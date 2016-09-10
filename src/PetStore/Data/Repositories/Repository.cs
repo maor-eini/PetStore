@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 
-namespace PetStore.Models
+namespace PetStore.Data.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {

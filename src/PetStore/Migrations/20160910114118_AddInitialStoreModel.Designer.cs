@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using PetStore.Models;
+using PetStore.Data;
 
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    [Migration("20160910020637_AddInitialStoreModel")]
+    [Migration("20160910114118_AddInitialStoreModel")]
     partial class AddInitialStoreModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

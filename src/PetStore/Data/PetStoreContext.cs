@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PetStore.EntityConfigurations;
+using PetStore.Models;
 
-namespace PetStore.Models
+namespace PetStore.Data
 {
     public class PetStoreContext : IdentityDbContext<UserAccount>
     {
