@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetStore.Data;
 
 namespace PetStore.Controllers
 {
 
     public class HomeController : Controller
     {
+        IUnitOfWork _unitOfWork;
+        public HomeController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         public IActionResult Index()
         {
-
-            return View();
+            var products = _unitOfWork.Products.GetTopSellingProduct(10);
+            return View(products);
         }
 
     }
