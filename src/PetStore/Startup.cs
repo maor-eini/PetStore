@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetStore.Data;
 using PetStore.Models;
+using PetStore.ViewModels;
 using System.IO;
 
 namespace PetStore
@@ -15,7 +16,7 @@ namespace PetStore
     public class Startup
     {
         public IHostingEnvironment HostingEnvironment { get; private set; }
-        public IConfiguration Configuration { get; private set; }
+        public Microsoft.Extensions.Configuration.IConfiguration Configuration { get; private set; }
 
         public Startup(IHostingEnvironment hostingEnvironment)
         {
@@ -52,6 +53,13 @@ namespace PetStore
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<AccountFormViewModel, UserAccount>().ReverseMap();
+                config.CreateMap<PetFormViewModel, Pet>().ReverseMap();
+                config.CreateMap<AddressFormViewModel, UserAddress>().ReverseMap();
+            });
+
             services.AddMvc(config=> 
             {
                 //config.Filters.Add(new RequireHttpsAttribute()); //TODO: Wrap with env.IsProduction=true
@@ -83,6 +91,8 @@ namespace PetStore
             app.UseStatusCodePages();
 
             app.UseIdentity();
+
+           
 
             // Enable Mvc routes
             app.UseMvc(routes =>

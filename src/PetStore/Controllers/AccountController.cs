@@ -6,29 +6,130 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PetStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using PetStore.Data.Repositories.Interfaces;
+using AutoMapper;
 
 namespace PetStore.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
-        private UserManager<UserAccount> _userManger;
-        public AccountController(UserManager<UserAccount> userManger)
+        private readonly UserManager<UserAccount> _userManager;
+        private readonly SignInManager<UserAccount> _signInManager;
+        private readonly IPetRepository _petRepository;
+        private readonly IUserAddressRepository _userAddressRepository;
+        public AccountController(
+            UserManager<UserAccount> userManager, 
+            SignInManager<UserAccount> signInManager,
+            IPetRepository petRepository,
+            IUserAddressRepository userAddressRepository)
         {
-            _userManger = userManger;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _petRepository = petRepository;
+            _userAddressRepository = userAddressRepository;
         }
 
         #region Http GET actions
 
-        //Display User List
-        public IActionResult Index()
+        [AllowAnonymous]
+        public IActionResult Login(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
-        //Display User Details
-        public async Task<IActionResult> Details(string username)
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            var account = await _userManger.FindByNameAsync(username);
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            var userAccountViewModel = new AccountFormViewModel
+            {
+                
+                GenderOptions = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "M", Text = "Male"},
+                    new SelectListItem { Value = "F", Text = "Female" }
+                }
+            }
+            ;
+
+            return View(userAccountViewModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            { 
+                var user = Mapper.Map<UserAccount>(model.UserForm);
+
+                user.UserAddresses = new List<UserAddress>()
+                {
+                    Mapper.Map<UserAddress>(model.AddressForm)
+                };
+
+                user.Pets = new List<Pet>()
+                {
+                    Mapper.Map<Pet>(model.PetForm)
+                };
+
+                _petRepository.AddRange(user.Pets);
+                _userAddressRepository.AddRange(user.UserAddresses);
+
+                var result = await _userManager.CreateAsync(user, model.UserForm.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        //Display User Details
+        public async Task<IActionResult> Details(string id)
+        {
+            var account = await _userManager.FindByIdAsync(id);
 
             return View(account);
         }
@@ -47,30 +148,38 @@ namespace PetStore.Controllers
         }
 
         //Display Filled User Form 
-        public async Task<IActionResult> Update(string username)
+        public async Task<IActionResult> Update(string id)
         {
-            var account = await _userManger.FindByNameAsync(username);
+
+            var account = await _userManager.FindByIdAsync(id);
 
             if (account == null)
                 return NotFound();
 
-            var viewModel = new UserFormViewModel()
+            if (User.Identity.Name == account.UserName || User.IsInRole("Admin"))
             {
-                Id = account.Id,
-                Heading = $"Edit {account.FirstName} {account.LastName}",
-                FirstName = account.FirstName,
-                LastName = account.LastName,
-                Gender = account.Gender,
-                DateOfBirth = account.DateOfBirth.ToString("d MMM yyyy"),
-                GenderList = new List<SelectListItem>
+                var viewModel = new UserFormViewModel()
                 {
-                    new SelectListItem { Value = "M", Text = "Male"},
-                    new SelectListItem { Value = "F", Text = "Female" }
-                }
+                    Id = account.Id,
+                    Heading = $"Edit {account.FirstName} {account.LastName}",
+                    FirstName = account.FirstName,
+                    LastName = account.LastName,
+                    Gender = account.Gender,
+                    DateOfBirth = account.DateOfBirth.ToString("d MMM yyyy"),
+                    GenderList = new List<SelectListItem>
+                        {
+                            new SelectListItem { Value = "M", Text = "Male"},
+                            new SelectListItem { Value = "F", Text = "Female" }
+                        }
 
-            };
+                };
 
-            return View("UserForm", viewModel);
+                return View("UserForm", viewModel);
+            }
+
+
+            return View("User");
+
         }
 
 
@@ -100,13 +209,12 @@ namespace PetStore.Controllers
                 DateOfBirth = viewModel.GetDateTimeOfBirth(),
             };
 
-            await _userManger.CreateAsync(account);
+            await _userManager.CreateAsync(account);
 
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Update(UserFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -120,7 +228,7 @@ namespace PetStore.Controllers
             }
 
             //Update existing User
-            var userInDb = await _userManger.FindByNameAsync(viewModel.Id.ToString());
+            var userInDb = await _userManager.FindByIdAsync(viewModel.Id.ToString());
 
             if (userInDb == null)
                 return NotFound();
@@ -130,7 +238,7 @@ namespace PetStore.Controllers
             userInDb.Gender = viewModel.Gender;
             userInDb.DateOfBirth = viewModel.GetDateTimeOfBirth();
 
-            await _userManger.UpdateAsync(userInDb);
+            await _userManager.UpdateAsync(userInDb);
 
             return RedirectToAction("Index", "Home");
         }
@@ -138,14 +246,36 @@ namespace PetStore.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-            var userInDb = await _userManger.FindByIdAsync(id.ToString());
+            var userInDb = await _userManager.FindByIdAsync(id.ToString());
 
             if (userInDb == null)
                 return NotFound();
 
-            await _userManger.DeleteAsync(userInDb);
+            await _userManager.DeleteAsync(userInDb);
 
             return View();
+        }
+
+        #endregion
+
+        #region Helpers
+
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         #endregion

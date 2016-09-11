@@ -16,7 +16,8 @@
     "Microsoft.Extensions.Configuration": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
-    "Microsoft.AspNet.Identity.Core": "2.2.1"
+    "Microsoft.AspNet.Identity.Core": "2.2.1",
+    "AutoMapper": "5.1.1"
   },
 
   "tools": {
