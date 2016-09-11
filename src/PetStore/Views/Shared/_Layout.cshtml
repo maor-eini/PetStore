@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Policy
+@using Microsoft.AspNetCore.Mvc.Routing
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -142,7 +144,7 @@
                     <li>
                         <ul class="list-unstyled">
                             <li class="footer-nav-title">INSIDE PET SHOP</li>
-                            <li><a href="#">About Pet Shop</a></li>
+                            <li><a asp-controller="About">About Pet Shop</a></li>
                             <li><a href="#">Hours of Operation</a></li>
                             <li><a href="#">Contact Us</a></li>
                         </ul>
