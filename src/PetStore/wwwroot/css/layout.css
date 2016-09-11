@@ -66,6 +66,12 @@ footer .container li a {
     font-size: small;
 }
 
+/*****CAROUSEL*****/
+
+.carousel-inner img {
+    width: 100%
+}
+
 /*POPULAR PRODUCTS*/
 
 .popular-products-container{
@@ -89,4 +95,21 @@ footer .container li a {
 video{
     width:600px;
     margin:10px;
+}
+
+/*****ABOUT US*****/
+
+.store-img {
+    display: inline-block;
+    padding: 50px;
+}
+
+.about-content {
+    padding: 40px;
+}
+
+
+#map {
+    height: 400px;
+    width: 550px;
 }
