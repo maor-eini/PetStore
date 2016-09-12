@@ -1,56 +1,147 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PetStore.Data.Repositories.Interfaces;
 using PetStore.Models;
 using PetStore.ViewModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PetStore.Controllers
 {
     public class AuthController : Controller
     {
-        private SignInManager<UserAccount> _signInManager;
-        public AuthController(SignInManager<UserAccount> signInManager)
+        private readonly UserManager<UserAccount> _userManager;
+        private readonly SignInManager<UserAccount> _signInManager;
+        private readonly IPetRepository _petRepository;
+        private readonly IUserAddressRepository _userAddressRepository;
+        public AuthController(
+            UserManager<UserAccount> userManager,
+            SignInManager<UserAccount> signInManager,
+            IPetRepository petRepository,
+            IUserAddressRepository userAddressRepository)
         {
+            _userManager = userManager;
             _signInManager = signInManager;
+            _petRepository = petRepository;
+            _userAddressRepository = userAddressRepository;
         }
 
-        public IActionResult Login()
+        [AllowAnonymous]
+        public IActionResult Login(string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
-                RedirectToAction("Index", "Home");
+                RedirectToLocal(returnUrl);
             }
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var signInResult = await _signInManager
-                    .PasswordSignInAsync(vm.Email, vm.Password, true, false);
-
-                if (signInResult.Succeeded)
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
                 {
-                    if (string.IsNullOrWhiteSpace(returnUrl))
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        return Redirect(returnUrl);
-                    }
+                    return RedirectToLocal(returnUrl);
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Incorrect username or password");
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 }
-
-
             }
 
-            return View();
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
+
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            var userAccountViewModel = new AccountFormViewModel
+            {
+
+                GenderOptions = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "M", Text = "Male"},
+                    new SelectListItem { Value = "F", Text = "Female" }
+                }
+            }
+            ;
+
+            return View(userAccountViewModel);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = Mapper.Map<UserAccount>(model.UserForm);
+
+                user.UserAddresses = new List<UserAddress>()
+                {
+                    Mapper.Map<UserAddress>(model.AddressForm)
+                };
+
+                user.Pets = new List<Pet>()
+                {
+                    Mapper.Map<Pet>(model.PetForm)
+                };
+
+                _petRepository.AddRange(user.Pets);
+                _userAddressRepository.AddRange(user.UserAddresses);
+
+                var result = await _userManager.CreateAsync(user, model.UserForm.Password);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+
     }
 }

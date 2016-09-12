@@ -20,7 +20,7 @@ namespace PetStore.Data.Repositories
 
         public TEntity Get(int id)
         {
-            return _entities.Find(id);
+            return _entities.Find(id); //Can be replaced with Where
         }
 
         public IEnumerable<TEntity> GetAll()

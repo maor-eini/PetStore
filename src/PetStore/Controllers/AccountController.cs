@@ -32,100 +32,6 @@ namespace PetStore.Controllers
 
         #region Http GET actions
 
-        [AllowAnonymous]
-        public IActionResult Login(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    return RedirectToLocal(returnUrl);
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            var userAccountViewModel = new AccountFormViewModel
-            {
-                
-                GenderOptions = new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "M", Text = "Male"},
-                    new SelectListItem { Value = "F", Text = "Female" }
-                }
-            }
-            ;
-
-            return View(userAccountViewModel);
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            { 
-                var user = Mapper.Map<UserAccount>(model.UserForm);
-
-                user.UserAddresses = new List<UserAddress>()
-                {
-                    Mapper.Map<UserAddress>(model.AddressForm)
-                };
-
-                user.Pets = new List<Pet>()
-                {
-                    Mapper.Map<Pet>(model.PetForm)
-                };
-
-                _petRepository.AddRange(user.Pets);
-                _userAddressRepository.AddRange(user.UserAddresses);
-
-                var result = await _userManager.CreateAsync(user, model.UserForm.Password);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction(nameof(HomeController.Index), "Home");
-                }
-                AddErrors(result);
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogOff()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
-
         //Display User Details
         public async Task<IActionResult> Details(string id)
         {
@@ -137,14 +43,14 @@ namespace PetStore.Controllers
         //Display Empty User Form
         public IActionResult Create()
         {
-            var userForm = new UserFormViewModel();
-            userForm.Heading = "Create a new User";
-            userForm.GenderList = new List<SelectListItem>
+            var accountForm = new AccountFormViewModel();
+            accountForm.Heading = "Create a new User";
+            accountForm.GenderOptions = new List<SelectListItem>
             {
                 new SelectListItem { Value = "M", Text = "Male"},
                 new SelectListItem { Value = "F", Text = "Female" }
             };
-            return View("UserForm", userForm);
+            return View("UserForm", accountForm);
         }
 
         //Display Filled User Form 
@@ -158,7 +64,7 @@ namespace PetStore.Controllers
 
             if (User.Identity.Name == account.UserName || User.IsInRole("Admin"))
             {
-                var viewModel = new UserFormViewModel()
+                var viewModel = new AccountFormViewModel()
                 {
                     Id = account.Id,
                     Heading = $"Edit {account.FirstName} {account.LastName}",
@@ -166,7 +72,7 @@ namespace PetStore.Controllers
                     LastName = account.LastName,
                     Gender = account.Gender,
                     DateOfBirth = account.DateOfBirth.ToString("d MMM yyyy"),
-                    GenderList = new List<SelectListItem>
+                    GenderOptions = new List<SelectListItem>
                         {
                             new SelectListItem { Value = "M", Text = "Male"},
                             new SelectListItem { Value = "F", Text = "Female" }
@@ -177,9 +83,19 @@ namespace PetStore.Controllers
                 return View("UserForm", viewModel);
             }
 
-
             return View("User");
+        }
 
+        public async Task<IActionResult> Delete(int id)
+        {
+            var accountInDb = await _userManager.FindByIdAsync(id.ToString());
+
+            if (accountInDb == null)
+                return NotFound();
+
+            await _userManager.DeleteAsync(accountInDb);
+
+            return View();
         }
 
 
@@ -188,11 +104,11 @@ namespace PetStore.Controllers
         #region Http POST actions
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserFormViewModel viewModel)
+        public async Task<IActionResult> Create(AccountFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                viewModel.GenderList = new List<SelectListItem>
+                viewModel.GenderOptions = new List<SelectListItem>
                 {
                     new SelectListItem { Value = "M", Text = "Male"},
                     new SelectListItem { Value = "F", Text = "Female" }
@@ -215,11 +131,11 @@ namespace PetStore.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(UserFormViewModel viewModel)
+        public async Task<IActionResult> Update(AccountFormViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                viewModel.GenderList = new List<SelectListItem>
+                viewModel.GenderOptions = new List<SelectListItem>
                 {
                     new SelectListItem { Value = "M", Text = "Male"},
                     new SelectListItem { Value = "F", Text = "Female" }
@@ -228,32 +144,19 @@ namespace PetStore.Controllers
             }
 
             //Update existing User
-            var userInDb = await _userManager.FindByIdAsync(viewModel.Id.ToString());
+            var accountInDb = await _userManager.FindByIdAsync(viewModel.Id.ToString());
 
-            if (userInDb == null)
+            if (accountInDb == null)
                 return NotFound();
 
-            userInDb.FirstName = viewModel.FirstName;
-            userInDb.LastName = viewModel.LastName;
-            userInDb.Gender = viewModel.Gender;
-            userInDb.DateOfBirth = viewModel.GetDateTimeOfBirth();
+            accountInDb.FirstName = viewModel.FirstName;
+            accountInDb.LastName = viewModel.LastName;
+            accountInDb.Gender = viewModel.Gender;
+            accountInDb.DateOfBirth = viewModel.GetDateTimeOfBirth();
 
-            await _userManager.UpdateAsync(userInDb);
+            await _userManager.UpdateAsync(accountInDb);
 
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var userInDb = await _userManager.FindByIdAsync(id.ToString());
-
-            if (userInDb == null)
-                return NotFound();
-
-            await _userManager.DeleteAsync(userInDb);
-
-            return View();
         }
 
         #endregion
@@ -261,22 +164,7 @@ namespace PetStore.Controllers
         #region Helpers
 
 
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
-        }
 
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            return RedirectToAction("Index", "Home");
-        }
 
         #endregion
     }
