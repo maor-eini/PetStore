@@ -1,0 +1,92 @@
+﻿@model PetStore.ViewModels.RegisterViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>@Model.UserForm.Heading</h2>
+<div id="mainContent">
+    @using (Html.BeginForm(FormMethod.Post, true, new { @class = "register-form" }))
+    {
+        <section class="personal-details">
+            <h4>Personal Details</h4>
+
+            <span>All the fields are <span id="required">required</span>.</span>
+            <div>
+                @Html.LabelFor(m => m.UserForm.FirstName, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.UserForm.FirstName, new { autofocus = "autofocus", @class = "formField" })
+                @Html.ValidationMessageFor(m => m.UserForm.FirstName)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.UserForm.LastName, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.UserForm.LastName, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.UserForm.LastName)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.UserForm.Gender, new { @class = "formLabel" })
+                @Html.DropDownListFor(m => m.UserForm.Gender, new SelectList(Model.UserForm.GenderOptions, "Value", "Text"), new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.UserForm.Gender)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.UserForm.DateOfBirth, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.UserForm.DateOfBirth, new {@type="date", @class = "formField" })
+                @Html.ValidationMessageFor(m => m.UserForm.DateOfBirth)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.UserForm.PhoneNumber, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.UserForm.PhoneNumber, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.UserForm.PhoneNumber)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.AddressForm.Street, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.AddressForm.Street , new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.AddressForm.Street)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.AddressForm.City, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.AddressForm.City, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.AddressForm.City)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.AddressForm.ZipCode, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.AddressForm.ZipCode, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.AddressForm.ZipCode)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.UserForm.Email, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.UserForm.Email, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.UserForm.Email)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.UserForm.Password, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.UserForm.Password, new { @type = "password", @class = "formField" })
+                @Html.ValidationMessageFor(m => m.UserForm.Password)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.UserForm.ConfirmPassword, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.UserForm.ConfirmPassword, new { @type = "password", @class = "formField" })
+                @Html.ValidationMessageFor(m => m.UserForm.ConfirmPassword)
+            </div>
+        </section>
+
+        <section class="pet-details">
+            <h4>Tell Us About Your Pet..</h4>
+
+            <span>All the fields are <span id="required">required</span>.</span>
+            <div>
+                @Html.LabelFor(m => m.PetForm.Type, new { @class = "formLabel" })
+                @Html.DropDownListFor(m => m.PetForm.Type, new List<SelectListItem> { new SelectListItem { Text = "Dog", Value = "Dog" }, new SelectListItem { Text = "Cat", Value = "Cat" } }, new { autofocus = "autofocus", @class = "formField" })
+                @Html.ValidationMessageFor(m => m.PetForm.Type)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.PetForm.Name, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.PetForm.Name, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.PetForm.Name)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.PetForm.Size, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.PetForm.Size ,new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.PetForm.Size)
+            </div>
+        </section>
+        <button type="submit">Save</button>
+    }
+</div>

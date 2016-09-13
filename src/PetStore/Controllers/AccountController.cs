@@ -71,7 +71,7 @@ namespace PetStore.Controllers
                     FirstName = account.FirstName,
                     LastName = account.LastName,
                     Gender = account.Gender,
-                    DateOfBirth = account.DateOfBirth.ToString("d MMM yyyy"),
+                    DateOfBirth = account.DateOfBirth,
                     GenderOptions = new List<SelectListItem>
                         {
                             new SelectListItem { Value = "M", Text = "Male"},
@@ -122,7 +122,7 @@ namespace PetStore.Controllers
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
                 Gender = viewModel.Gender,
-                DateOfBirth = viewModel.GetDateTimeOfBirth(),
+                DateOfBirth = viewModel.DateOfBirth,
             };
 
             await _userManager.CreateAsync(account);
@@ -152,7 +152,7 @@ namespace PetStore.Controllers
             accountInDb.FirstName = viewModel.FirstName;
             accountInDb.LastName = viewModel.LastName;
             accountInDb.Gender = viewModel.Gender;
-            accountInDb.DateOfBirth = viewModel.GetDateTimeOfBirth();
+            accountInDb.DateOfBirth = viewModel.DateOfBirth;
 
             await _userManager.UpdateAsync(accountInDb);
 

@@ -70,18 +70,20 @@ namespace PetStore.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var userAccountViewModel = new AccountFormViewModel
+            var registerViewModel = new RegisterViewModel
             {
-
-                GenderOptions = new List<SelectListItem>
+                UserForm = new AccountFormViewModel
                 {
-                    new SelectListItem { Value = "M", Text = "Male"},
-                    new SelectListItem { Value = "F", Text = "Female" }
+                    GenderOptions = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "M", Text = "Male"},
+                        new SelectListItem { Value = "F", Text = "Female" }
+                    },
+                    Heading = "Register to Pet Shop"
                 }
-            }
-            ;
+            };
 
-            return View(userAccountViewModel);
+            return View(registerViewModel);
         }
 
         [HttpPost]
@@ -92,13 +94,14 @@ namespace PetStore.Controllers
             if (ModelState.IsValid)
             {
                 var user = Mapper.Map<UserAccount>(model.UserForm);
+                user.UserName = model.UserForm.Email;
 
                 user.UserAddresses = new List<UserAddress>()
                 {
                     Mapper.Map<UserAddress>(model.AddressForm)
                 };
 
-                user.Pets = new List<Pet>()
+                user.Pets = new List<Pet>
                 {
                     Mapper.Map<Pet>(model.PetForm)
                 };

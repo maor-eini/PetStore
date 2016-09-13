@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetStore.Data;
+using PetStore.Data.Repositories;
+using PetStore.Data.Repositories.Interfaces;
 using PetStore.Data.UnitOfWork;
 using PetStore.Models;
 using PetStore.ViewModels;
@@ -53,6 +55,8 @@ namespace PetStore
                     .UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPetRepository, PetRepository>();
+            services.AddScoped<IUserAddressRepository, UserAddressRepository>();
             services.AddTransient<PetStoreContextSeedData>();
 
             Mapper.Initialize(config =>
