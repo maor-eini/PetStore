@@ -1,7 +1,7 @@
 ﻿using PetStore.Data.Repositories.Interfaces;
 using System;
 
-namespace PetStore.Data
+namespace PetStore.Data.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {

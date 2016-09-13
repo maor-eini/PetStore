@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PetStore.Data;
+using PetStore.Data.UnitOfWork;
 
 namespace PetStore.Controllers
 {

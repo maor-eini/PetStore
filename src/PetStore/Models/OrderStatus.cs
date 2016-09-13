@@ -11,12 +11,4 @@ namespace PetStore.Models
         public ICollection<Order> Orders { get; set; }
     }
 
-    //public enum OrderStatus
-    //{
-    //    New,
-    //    Hold,
-    //    Shipped,
-    //    Delivered,
-    //    Closed
-    //}
 }

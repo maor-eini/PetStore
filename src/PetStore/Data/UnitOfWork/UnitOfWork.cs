@@ -1,7 +1,7 @@
 ﻿using PetStore.Data.Repositories;
 using PetStore.Data.Repositories.Interfaces;
 
-namespace PetStore.Data
+namespace PetStore.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetStore.Data;
+using PetStore.Data.UnitOfWork;
 using PetStore.Models;
 using PetStore.ViewModels;
 using System.IO;
@@ -52,6 +53,7 @@ namespace PetStore
                     .UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<PetStoreContextSeedData>();
 
             Mapper.Initialize(config =>
             {
@@ -72,7 +74,10 @@ namespace PetStore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, 
+            IHostingEnvironment env, 
+            ILoggerFactory loggerFactory,
+            PetStoreContextSeedData seeder)
         {
             //loggerFactory.AddConsole();
 
@@ -92,8 +97,6 @@ namespace PetStore
 
             app.UseIdentity();
 
-           
-
             // Enable Mvc routes
             app.UseMvc(routes =>
             {
@@ -105,10 +108,7 @@ namespace PetStore
             });
 
 
-            /*app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Hello World!");
-            });*/
+            seeder.SeedData().Wait();
         }
     }
 }

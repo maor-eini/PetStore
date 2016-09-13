@@ -18,6 +18,8 @@ namespace PetStore.Data
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Provider> Providers { get; set; }
         public DbSet<ProviderItem> ProviderItems { get; set; }
+        public DbSet<Pet> Pets { get; set; }
+        public DbSet<PetType> PetTypes { get; set; }
 
         public PetStoreContext(DbContextOptions<PetStoreContext> options)
             :base(options)

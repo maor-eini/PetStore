@@ -16,16 +16,19 @@ namespace PetStore.Controllers
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IPetRepository _petRepository;
+        private readonly IPetTypeRepository _petTypeRepository;
         private readonly IUserAddressRepository _userAddressRepository;
         public AuthController(
             UserManager<UserAccount> userManager,
             SignInManager<UserAccount> signInManager,
             IPetRepository petRepository,
+            IPetTypeRepository petTypeRepository,
             IUserAddressRepository userAddressRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _petRepository = petRepository;
+            _petTypeRepository = petTypeRepository;
             _userAddressRepository = userAddressRepository;
         }
 
