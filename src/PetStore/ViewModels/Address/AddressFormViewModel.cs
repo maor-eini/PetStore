@@ -9,7 +9,5 @@
         public string State { get; set; }
         public string Province { get; set; }
         public string ZipCode { get; set; }
-        public string IsDefaultBillingAddress { get; set; }
-        public string IsDefaultShippingAddress { get; set; }
     }
 }

@@ -50,10 +50,10 @@ namespace PetStore.Data
 
             builder.Entity<UserAddress>().ConfigureUserAddress();
 
-            builder.Entity<UserImage>().ConfigureUserImage();
-
 
             builder.Entity<Pet>().ConfigurePet();
+
+            builder.Entity<PetType>().ConfigurePetType();
 
 
             builder.Entity<Product>().ConfigureProduct();

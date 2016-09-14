@@ -44,9 +44,9 @@ namespace PetStore
                 config.Password.RequiredLength = 8;
             })
             .AddEntityFrameworkStores<PetStoreContext,int>()
-            .AddDefaultTokenProviders()
             .AddUserStore<UserStore<UserAccount, UserRole, PetStoreContext, int>>()
-            .AddRoleStore<RoleStore<UserRole, PetStoreContext, int>>();
+            .AddRoleStore<RoleStore<UserRole, PetStoreContext, int>>()
+            .AddDefaultTokenProviders();
 
             //services.ConfigreCookieAuthentication()
 
@@ -59,10 +59,17 @@ namespace PetStore
             services.AddScoped<IUserAddressRepository, UserAddressRepository>();
             services.AddTransient<PetStoreContextSeedData>();
 
+            //TODO: move out to an external class
             Mapper.Initialize(config =>
             {
-                config.CreateMap<AccountFormViewModel, UserAccount>().ReverseMap();
-                config.CreateMap<PetFormViewModel, Pet>().ReverseMap();
+                config.CreateMap<AccountFormViewModel, UserAccount>()
+                .ForMember(ua => ua.UserName, opt=>opt.MapFrom(p=>p.Email))
+                .ReverseMap();
+
+                config.CreateMap<PetFormViewModel, Pet>()
+                .ForMember(p=>p.Type,opt => opt.Ignore())
+                .ReverseMap();
+
                 config.CreateMap<AddressFormViewModel, UserAddress>().ReverseMap();
             });
 

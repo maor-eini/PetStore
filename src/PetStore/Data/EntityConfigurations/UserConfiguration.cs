@@ -26,16 +26,10 @@ namespace PetStore.EntityConfigurations
             b.Property(ua => ua.IsActive)
                 .HasMaxLength(1);
 
-            b.HasOne(ua => ua.Image)
-                .WithOne(ui => ui.UserAccount)
-                .HasForeignKey<UserImage>(ui => ui.UserAccountId)
-                .HasPrincipalKey<UserAccount>(ua => ua.Id)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            b.HasMany(ua => ua.UserAddresses)
+            b.HasOne(ua => ua.UserAddress)
                 .WithOne(uadd => uadd.UserAccount)
-                .HasForeignKey(uadd => uadd.UserAccountId)
-                .HasPrincipalKey(ua=>ua.Id)
+                .HasForeignKey<UserAddress>(uadd => uadd.UserAccountId)
+                .HasPrincipalKey<UserAccount>(ua=>ua.Id)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -45,10 +39,10 @@ namespace PetStore.EntityConfigurations
                 .HasPrincipalKey<UserAccount>(ua => ua.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            b.HasMany(ua => ua.Pets)
+            b.HasOne(ua => ua.Pet)
                 .WithOne(p => p.UserAccount)
-                .HasForeignKey(p => p.UserAccountId)
-                .HasPrincipalKey(ua => ua.Id)
+                .HasForeignKey<Pet>(p => p.UserAccountId)
+                .HasPrincipalKey<UserAccount>(ua => ua.Id)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 
@@ -58,14 +52,6 @@ namespace PetStore.EntityConfigurations
 
             b.HasKey(ua => ua.Id);
                 
-        }
-
-        public static void ConfigureUserImage(this EntityTypeBuilder<UserImage> b)
-        {
-            b.ToTable("Images", "User");
-
-            b.HasKey(ua => ua.Id);
-
         }
 
         public static void ConfigureIdentityUser(this EntityTypeBuilder<IdentityUser> b)

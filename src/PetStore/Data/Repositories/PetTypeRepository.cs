@@ -1,5 +1,8 @@
-﻿using PetStore.Data.Repositories.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using PetStore.Data.Repositories.Interfaces;
 using PetStore.Models;
+using System.Linq;
 
 namespace PetStore.Data.Repositories
 {
@@ -13,6 +16,11 @@ namespace PetStore.Data.Repositories
         public PetStoreContext PetStoreContext
         {
             get { return Context as PetStoreContext; }
+        }
+
+        public IEnumerable<string> GetTypeNameList()
+        {
+            return PetStoreContext.PetTypes.OrderBy(t => t.Name).Select(t => t.Name);
         }
     }
 }

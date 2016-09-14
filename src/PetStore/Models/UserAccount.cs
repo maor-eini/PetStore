@@ -15,16 +15,12 @@ namespace PetStore.Models
         public DateTime DateAdded { get; set; }
         public DateTime LastUpdated { get; set; }
 
-        public ICollection<Pet> Pets { get; set; }
+        public Pet Pet { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ShoppingCart ShoppingCart { get; set; }
 
-        public int UserAddressesId { get; set; }
-        public ICollection<UserAddress> UserAddresses { get; set; }
-
-        public int ImageId { get; set; }
-        public UserImage Image { get; set; }
-
+        public int UserAddressId { get; set; }
+        public UserAddress UserAddress { get; set; }
 
     }
 }

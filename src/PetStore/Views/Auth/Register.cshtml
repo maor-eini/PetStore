@@ -36,21 +36,6 @@
                 @Html.ValidationMessageFor(m => m.UserForm.PhoneNumber)
             </div>
             <div>
-                @Html.LabelFor(m => m.AddressForm.Street, new { @class = "formLabel" })
-                @Html.TextBoxFor(m => m.AddressForm.Street , new { @class = "formField" })
-                @Html.ValidationMessageFor(m => m.AddressForm.Street)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.AddressForm.City, new { @class = "formLabel" })
-                @Html.TextBoxFor(m => m.AddressForm.City, new { @class = "formField" })
-                @Html.ValidationMessageFor(m => m.AddressForm.City)
-            </div>
-            <div>
-                @Html.LabelFor(m => m.AddressForm.ZipCode, new { @class = "formLabel" })
-                @Html.TextBoxFor(m => m.AddressForm.ZipCode, new { @class = "formField" })
-                @Html.ValidationMessageFor(m => m.AddressForm.ZipCode)
-            </div>
-            <div>
                 @Html.LabelFor(m => m.UserForm.Email, new { @class = "formLabel" })
                 @Html.TextBoxFor(m => m.UserForm.Email, new { @class = "formField" })
                 @Html.ValidationMessageFor(m => m.UserForm.Email)
@@ -66,15 +51,31 @@
                 @Html.ValidationMessageFor(m => m.UserForm.ConfirmPassword)
             </div>
         </section>
-
+        <section class="address-details">
+            <h4>Billing and Shipping Address</h4>
+            <div>
+                @Html.LabelFor(m => m.AddressForm.Street, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.AddressForm.Street, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.AddressForm.Street)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.AddressForm.City, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.AddressForm.City, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.AddressForm.City)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.AddressForm.ZipCode, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.AddressForm.ZipCode, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.AddressForm.ZipCode)
+            </div>
+        </section>
         <section class="pet-details">
             <h4>Tell Us About Your Pet..</h4>
-
-            <span>All the fields are <span id="required">required</span>.</span>
+            <span>All the fields are <span id="required">optional</span>.</span>
             <div>
-                @Html.LabelFor(m => m.PetForm.Type, new { @class = "formLabel" })
-                @Html.DropDownListFor(m => m.PetForm.Type, new List<SelectListItem> { new SelectListItem { Text = "Dog", Value = "Dog" }, new SelectListItem { Text = "Cat", Value = "Cat" } }, new { autofocus = "autofocus", @class = "formField" })
-                @Html.ValidationMessageFor(m => m.PetForm.Type)
+                @Html.LabelFor(m => m.PetForm.TypeId, new { @class = "formLabel" })
+                @Html.DropDownListFor(m => m.PetForm.TypeId, Model.PetForm.TypeOptions, new { autofocus = "autofocus", @class = "formField" })
+                @Html.ValidationMessageFor(m => m.PetForm.TypeId)
             </div>
             <div>
                 @Html.LabelFor(m => m.PetForm.Name, new { @class = "formLabel" })
@@ -83,7 +84,7 @@
             </div>
             <div>
                 @Html.LabelFor(m => m.PetForm.Size, new { @class = "formLabel" })
-                @Html.TextBoxFor(m => m.PetForm.Size ,new { @class = "formField" })
+                @Html.DropDownListFor(m => m.PetForm.Size , Model.PetForm.SizeOptions, new { @class = "formField" })
                 @Html.ValidationMessageFor(m => m.PetForm.Size)
             </div>
         </section>

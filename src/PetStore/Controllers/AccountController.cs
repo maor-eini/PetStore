@@ -36,20 +36,13 @@ namespace PetStore.Controllers
         public async Task<IActionResult> Details(string id)
         {
             var account = await _userManager.FindByIdAsync(id);
-
             return View(account);
         }
 
         //Display Empty User Form
         public IActionResult Create()
         {
-            var accountForm = new AccountFormViewModel();
-            accountForm.Heading = "Create a new User";
-            accountForm.GenderOptions = new List<SelectListItem>
-            {
-                new SelectListItem { Value = "M", Text = "Male"},
-                new SelectListItem { Value = "F", Text = "Female" }
-            };
+            var accountForm = new AccountFormViewModel { Heading = "Create a new User" };
             return View("UserForm", accountForm);
         }
 
@@ -71,13 +64,7 @@ namespace PetStore.Controllers
                     FirstName = account.FirstName,
                     LastName = account.LastName,
                     Gender = account.Gender,
-                    DateOfBirth = account.DateOfBirth,
-                    GenderOptions = new List<SelectListItem>
-                        {
-                            new SelectListItem { Value = "M", Text = "Male"},
-                            new SelectListItem { Value = "F", Text = "Female" }
-                        }
-
+                    DateOfBirth = account.DateOfBirth
                 };
 
                 return View("UserForm", viewModel);
@@ -108,11 +95,6 @@ namespace PetStore.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.GenderOptions = new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "M", Text = "Male"},
-                    new SelectListItem { Value = "F", Text = "Female" }
-                };
                 return View("UserForm", viewModel);
             }
 
@@ -135,11 +117,6 @@ namespace PetStore.Controllers
         {
             if (!ModelState.IsValid)
             {
-                viewModel.GenderOptions = new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "M", Text = "Male"},
-                    new SelectListItem { Value = "F", Text = "Female" }
-                };
                 return View("UserForm", viewModel);
             }
 

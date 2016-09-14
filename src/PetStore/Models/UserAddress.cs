@@ -12,8 +12,6 @@ namespace PetStore.Models
         public string State { get; set; }
         public string Province { get; set; }
         public string ZipCode { get; set; }
-        public string IsDefaultBillingAddress { get; set; }
-        public string IsDefaultShippingAddress { get; set; }
 
         public ICollection<Order> Orders { get; set; }
         public int UserAccountId { get; set; }

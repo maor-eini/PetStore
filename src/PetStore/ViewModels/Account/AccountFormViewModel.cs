@@ -21,7 +21,7 @@ namespace PetStore.ViewModels
 
         [Required]
         [Display(Name = "Date of Birth")]
-        public string DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         [Phone]
@@ -44,11 +44,22 @@ namespace PetStore.ViewModels
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public IEnumerable<SelectListItem> GenderOptions { get; set; }
-
-        public DateTime GetDateTimeOfBirth()
-        {
-            return DateTime.ParseExact(DateOfBirth, "dd/mm/yyyy", new CultureInfo("it-IT"));
+        public IEnumerable<SelectListItem> GenderOptions {
+            get
+            {
+                if (_genderOptions == null)
+                {
+                    _genderOptions = new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "M", Text = "Male"},
+                        new SelectListItem { Value = "F", Text = "Female" }
+                    };
+                }
+                 
+                return _genderOptions;
+            }
         }
+
+        private IEnumerable<SelectListItem> _genderOptions;
     }
 }

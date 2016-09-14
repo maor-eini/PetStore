@@ -7,6 +7,7 @@ using PetStore.Data.Repositories.Interfaces;
 using PetStore.Models;
 using PetStore.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PetStore.Controllers
@@ -72,14 +73,11 @@ namespace PetStore.Controllers
         {
             var registerViewModel = new RegisterViewModel
             {
-                UserForm = new AccountFormViewModel
+                UserForm = new AccountFormViewModel { Heading = "Register to Pet Shop" },
+                PetForm = new PetFormViewModel
                 {
-                    GenderOptions = new List<SelectListItem>
-                    {
-                        new SelectListItem { Value = "M", Text = "Male"},
-                        new SelectListItem { Value = "F", Text = "Female" }
-                    },
-                    Heading = "Register to Pet Shop"
+                    TypeOptions = _petTypeRepository.GetTypeNameList()
+                    .Select(x => new SelectListItem() { Text = x.ToString() })
                 }
             };
 
@@ -94,20 +92,13 @@ namespace PetStore.Controllers
             if (ModelState.IsValid)
             {
                 var user = Mapper.Map<UserAccount>(model.UserForm);
+
                 user.UserName = model.UserForm.Email;
+                user.UserAddress = Mapper.Map<UserAddress>(model.AddressForm);
+                user.Pet = Mapper.Map<Pet>(model.PetForm);
 
-                user.UserAddresses = new List<UserAddress>()
-                {
-                    Mapper.Map<UserAddress>(model.AddressForm)
-                };
-
-                user.Pets = new List<Pet>
-                {
-                    Mapper.Map<Pet>(model.PetForm)
-                };
-
-                _petRepository.AddRange(user.Pets);
-                _userAddressRepository.AddRange(user.UserAddresses);
+                _petRepository.Add(user.Pet);
+                _userAddressRepository.Add(user.UserAddress);
 
                 var result = await _userManager.CreateAsync(user, model.UserForm.Password);
                 if (result.Succeeded)
