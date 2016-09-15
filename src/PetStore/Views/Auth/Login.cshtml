@@ -5,43 +5,45 @@
     ViewBag.Title = "Login";
 }
 
-<h2>@ViewBag.Title.</h2>
-<div>
-    @using (Html.BeginForm("Login", "Auth", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        <h4>Enter your email and password</h4>
+<div class="login-form-container">
+    <h2 class="login-title">@ViewBag.Title</h2>
+    <div>
+        @using (Html.BeginForm("Login", "Auth", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <h5>Enter your email and password</h5>
             <hr />
             @Html.ValidationSummary(true, "")
             <div>
                 @Html.LabelFor(m => m.Email)
                 <div>
-                    @Html.TextBoxFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { id = "email" })
                     @Html.ValidationMessageFor(m => m.Email, "")
                 </div>
             </div>
             <div>
                 @Html.LabelFor(m => m.Password)
                 <div>
-                    @Html.PasswordFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { id = "password" })
                     @Html.ValidationMessageFor(m => m.Password, "")
                 </div>
             </div>
             <div>
                 <div>
-                    <div>
+                    <div class="remember-me">
                         @Html.CheckBoxFor(m => m.RememberMe)
                         @Html.LabelFor(m => m.RememberMe)
                     </div>
                 </div>
             </div>
             <div>
-                <div>
+                <div class="login-btn">
                     <input type="submit" value="Login" />
                 </div>
             </div>
-            <p>
+            <span class="register">
                 @Html.ActionLink("Register as a new user", "Register")
-            </p>
+            </span>
         }
+    </div>
 </div>
