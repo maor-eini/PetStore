@@ -6,7 +6,6 @@ namespace PetStore.Models
     {
         public Product()
         {
-            Images = new HashSet<ProductImage>();
             ShoppingCarts = new HashSet<ShoppingCartItem>();
             Orders = new HashSet<OrderItem>();
             Providers = new HashSet<ProviderItem>();
@@ -21,7 +20,7 @@ namespace PetStore.Models
         public int CategoryId { get; set; }
 
         public virtual ProductCategory Category { get; set; }
-        public virtual ICollection<ProductImage> Images { get; set; }
+        public virtual ProductImage Image { get; set; }
         public virtual ICollection<ShoppingCartItem> ShoppingCarts { get; set; }
         public virtual ICollection<OrderItem> Orders { get; set; }
         public virtual ICollection<ProviderItem> Providers { get; set; }

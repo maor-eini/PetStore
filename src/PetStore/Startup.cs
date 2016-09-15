@@ -12,6 +12,7 @@ using PetStore.Data.Repositories.Interfaces;
 using PetStore.Data.UnitOfWork;
 using PetStore.Models;
 using PetStore.ViewModels;
+using PetStore.ViewModels.Product;
 using System;
 using System.IO;
 
@@ -81,6 +82,8 @@ namespace PetStore
                 .ForMember(p=>p.Type,opt => opt.Ignore())
                 .ForMember(p=>p.TypeId, opt=>opt.MapFrom(pf=>int.Parse(pf.TypeId)))
                 .ReverseMap();
+
+                config.CreateMap<ProductFormViewModel, Product>().ReverseMap();
 
                 config.CreateMap<AddressFormViewModel, UserAddress>().ReverseMap();
             });
