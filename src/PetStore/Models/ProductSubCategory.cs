@@ -8,7 +8,7 @@
         public string Value { get; set; }
 
 
-        public ProductCategory MainCategory { get; set; }
+        public virtual ProductCategory MainCategory { get; set; }
 
     }
 }

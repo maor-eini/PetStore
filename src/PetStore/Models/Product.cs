@@ -4,6 +4,14 @@ namespace PetStore.Models
 {
     public class Product
     {
+        public Product()
+        {
+            Images = new HashSet<ProductImage>();
+            ShoppingCarts = new HashSet<ShoppingCartItem>();
+            Orders = new HashSet<OrderItem>();
+            Providers = new HashSet<ProviderItem>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string ProductCode { get; set; }
@@ -12,11 +20,11 @@ namespace PetStore.Models
         public string Manufacturer { get; set; }
         public int CategoryId { get; set; }
 
-        public ProductCategory Category { get; set; }
-        public ICollection<ProductImage> Images { get; set; }
-        public ICollection<ShoppingCartItem> ShoppingCarts { get; set; }
-        public ICollection<OrderItem> Orders { get; set; }
-        public ICollection<ProviderItem> Providers { get; set; }
+        public virtual ProductCategory Category { get; set; }
+        public virtual ICollection<ProductImage> Images { get; set; }
+        public virtual ICollection<ShoppingCartItem> ShoppingCarts { get; set; }
+        public virtual ICollection<OrderItem> Orders { get; set; }
+        public virtual ICollection<ProviderItem> Providers { get; set; }
 
     }
 }

@@ -20,18 +20,21 @@ namespace PetStore.Controllers
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IProviderRepository _providerRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IProductCategoryRepository _productCategoryRepository;
         public ProductsController(
             UserManager<UserAccount> userManager,
             SignInManager<UserAccount> signInManager,
             IProviderRepository providerRepository,
             IProductRepository productRepository,
-            IUserAddressRepository userAddressRepository)
+
+            IUserAddressRepository productCategoryRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _providerRepository = providerRepository;
             _productRepository = productRepository;
         }
+
         // GET: /<controller>/
         [AllowAnonymous]
         public IActionResult List()
@@ -48,7 +51,12 @@ namespace PetStore.Controllers
         // GET: /<controller>/
         public IActionResult Create()
         {
-            var productForm = new ProductFormViewModel();
+            var productForm = new ProductFormViewModel
+            {
+                //Categories = _productRepository..GetAll()
+                //    .Select(pt => new SelectListItem() { Value = pt.Id.ToString(), Text = pt.Name })
+            };
+
             return View(productForm);
         }
 
