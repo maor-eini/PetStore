@@ -8,9 +8,10 @@ using PetStore.Data;
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    partial class PetStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20160915201354_ChangeProductImageTable")]
+    partial class ChangeProductImageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasDefaultSchema("ApplicationData")
@@ -172,7 +173,8 @@ namespace PetStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("TypeId")
+                        .IsUnique();
 
                     b.HasIndex("UserAccountId")
                         .IsUnique();
@@ -197,11 +199,9 @@ namespace PetStore.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Category");
+                    b.Property<int>("CategoryId");
 
                     b.Property<string>("Description");
-
-                    b.Property<string>("Image");
 
                     b.Property<string>("Manufacturer");
 
@@ -209,15 +209,11 @@ namespace PetStore.Migrations
 
                     b.Property<double>("Price");
 
-                    b.Property<int?>("ProductCategoryId");
-
                     b.Property<string>("ProductCode");
-
-                    b.Property<string>("SubCategory");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductCategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products","Product");
                 });
@@ -231,7 +227,24 @@ namespace PetStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("Category","Product");
+                });
+
+            modelBuilder.Entity("PetStore.Models.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Image");
+
+                    b.Property<int>("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("Images","Product");
                 });
 
             modelBuilder.Entity("PetStore.Models.ProductSubCategory", b =>
@@ -249,7 +262,7 @@ namespace PetStore.Migrations
 
                     b.HasIndex("MainCategoryId");
 
-                    b.ToTable("ProductSubCategories");
+                    b.ToTable("SubCategories","Product");
                 });
 
             modelBuilder.Entity("PetStore.Models.Provider", b =>
@@ -510,8 +523,8 @@ namespace PetStore.Migrations
             modelBuilder.Entity("PetStore.Models.Pet", b =>
                 {
                     b.HasOne("PetStore.Models.PetType", "Type")
-                        .WithMany("Pet")
-                        .HasForeignKey("TypeId");
+                        .WithOne("Pet")
+                        .HasForeignKey("PetStore.Models.Pet", "TypeId");
 
                     b.HasOne("PetStore.Models.UserAccount", "UserAccount")
                         .WithOne("Pet")
@@ -521,9 +534,17 @@ namespace PetStore.Migrations
 
             modelBuilder.Entity("PetStore.Models.Product", b =>
                 {
-                    b.HasOne("PetStore.Models.ProductCategory")
+                    b.HasOne("PetStore.Models.ProductCategory", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("ProductCategoryId");
+                        .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("PetStore.Models.ProductImage", b =>
+                {
+                    b.HasOne("PetStore.Models.Product", "Product")
+                        .WithOne("Image")
+                        .HasForeignKey("PetStore.Models.ProductImage", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PetStore.Models.ProductSubCategory", b =>

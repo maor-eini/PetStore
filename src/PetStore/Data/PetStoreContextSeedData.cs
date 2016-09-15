@@ -121,7 +121,7 @@ namespace PetStore.Data
                     Name = "Instinct for small dogs",
                     ProductCode = "54CD7",
                     Description = "Instinct 5kg for small dogs. Duck.",
-                    Category = _context.ProductCategories.Where(c => c.Name == "Dogs").SingleOrDefault()
+                    Category = "Dogs"
                 };
 
                 var ProductTwo = new Product
@@ -131,7 +131,7 @@ namespace PetStore.Data
                     Name = "Instinct for large dogs",
                     ProductCode = "54CD8",
                     Description = "Instinct 12kg for large dogs. Duck.",
-                    Category = _context.ProductCategories.Where(c => c.Name == "Dogs").SingleOrDefault()
+                    Category = "Dogs"
                 };
 
                 var orderItemOne = new OrderItem

@@ -12,7 +12,6 @@ namespace PetStore.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
@@ -63,12 +62,6 @@ namespace PetStore.Data
 
 
             builder.Entity<Product>().ConfigureProduct();
-
-            builder.Entity<ProductImage>().ConfigureProductImage();
-
-            builder.Entity<ProductCategory>().ConfigureProductCategory();
-
-            builder.Entity<ProductSubCategory>().ConfigureProductSubCategory();
 
 
             builder.Entity<Order>().ConfigureOrder();

@@ -17,10 +17,10 @@ namespace PetStore.Models
         public double Price { get; set; }
         public string Description { get; set; }
         public string Manufacturer { get; set; }
-        public int CategoryId { get; set; }
+        public string Category { get; set; }
+        public string SubCategory { get; set; }
+        public string Image { get; set; }
 
-        public virtual ProductCategory Category { get; set; }
-        public virtual ProductImage Image { get; set; }
         public virtual ICollection<ShoppingCartItem> ShoppingCarts { get; set; }
         public virtual ICollection<OrderItem> Orders { get; set; }
         public virtual ICollection<ProviderItem> Providers { get; set; }
