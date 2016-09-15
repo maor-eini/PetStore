@@ -40,7 +40,7 @@
                 }
                 <li class="pull-left">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <a class="user-menu-link" href="#">View Cart <span class="cart-items">(<span id="cart-num-items">0</span>)</span></a>
+                    <a class="user-menu-link" href="#">View Cart <span class="badge" id="cart-num-items">0</span></a>
                 </li>
             </ul>
 
@@ -62,8 +62,8 @@
                                                 <li>
                                                     <p><strong>Food</strong></p>
                                                 </li>
-                                                <li><a href="#"> Dog Food </a></li>
-                                                <li><a href="#"> Bowls, Feeders, &amp; Waterers </a></li>
+                                                <li><a asp-controller="Products" asp-action="List" asp-route-category="Dog" asp-route-sub="Food"> Dog Food </a></li>
+                                                <li><a asp-controller="Products" asp-action="List" asp-route-category="Dog" asp-route-sub="bowls"> Bowls, Feeders, &amp; Waterers </a></li>
                                             </ul>
                                             <ul class="col-md-3 list-unstyled">
                                                 <li>
@@ -160,7 +160,7 @@
             </div>
         </div>
     </header>
-    <div>
+    <div id="main">
         @RenderBody()
     </div>
     <footer>

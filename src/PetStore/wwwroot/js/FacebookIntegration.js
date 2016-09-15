@@ -1,11 +1,11 @@
 ﻿
-$(".cart-items").hide();
+$("#cart-num-items").hide();
 
 $(".add-to-cart-btn").click(function (event) {
     event.preventDefault();
     var prevItems = parseInt($("#cart-num-items").text());
     $("#cart-num-items").html(++prevItems);
-    $(".cart-items").show();
+    $("#cart-num-items").show();
 });
 
 window.fbAsyncInit = function () {

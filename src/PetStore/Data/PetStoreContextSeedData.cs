@@ -56,8 +56,8 @@ namespace PetStore.Data
 
                 var productCategory = new[]
                 {
-                    new ProductCategory {  Name = "Dogs" },
-                    new ProductCategory {  Name = "Cats" }
+                    new ProductCategory {  Name = "Dog" },
+                    new ProductCategory {  Name = "Cat" }
                 };
 
                 _context.ProductCategories.AddRange(productCategory);
@@ -65,8 +65,8 @@ namespace PetStore.Data
 
                 var dogFood = new[]
                 {
-                    new ProductSubCategory { Name = "Food" , Value = "Dog Food" },
-                    new ProductSubCategory { Name = "Food" , Value = "Bowls, Feeders & Wateters" }
+                    new ProductSubCategory { Name = "Food" , Value = "Food" },
+                    new ProductSubCategory { Name = "Food" , Value = "Bowls" }
                 };
 
                 var catFood = new[]
