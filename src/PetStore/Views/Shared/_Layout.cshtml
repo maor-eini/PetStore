@@ -1,5 +1,11 @@
 ﻿@using System.Security.Policy
 @using Microsoft.AspNetCore.Mvc.Routing
+@using Microsoft.AspNetCore.Identity
+@using PetStore.Models
+
+@inject SignInManager<UserAccount> SignInManager
+@inject UserManager<UserAccount> UserManager
+
 <!DOCTYPE html>
 
 <html>
@@ -19,13 +25,24 @@
             <ul class="user-menu pull-right list-unstyled list-inline">
                 <li class="pull-left">
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    <a class="user-menu-link" asp-controller="Auth" asp-action="Login">My Account</a>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <form asp-controller="Auth" asp-action="Logout" method="post">
+                            <a asp-controller="Account" asp-action="Update" asp-route-id=@UserManager.GetUserId(User)>@UserManager.GetUserAsync(User).Result.FirstName</a>
+                            <button type="submit">Log off</button>
+                        </form>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login">Log in</a>
+                        }
                 </li>
                 <li class="pull-left">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                     <a class="user-menu-link" href="#">View Cart</a>
                 </li>
             </ul>
+
             <img class="logo" src="~/img/layout/logo.jpg" alt="Pet Store" />
         </div>
         <div class="navbar yamm navbar-default">
