@@ -153,7 +153,7 @@ namespace PetStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatus");
+                    b.ToTable("OrderStatus","Order");
                 });
 
             modelBuilder.Entity("PetStore.Models.Pet", b =>
@@ -171,11 +171,13 @@ namespace PetStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("TypeId")
+                        .IsUnique();
 
-                    b.HasIndex("UserAccountId");
+                    b.HasIndex("UserAccountId")
+                        .IsUnique();
 
-                    b.ToTable("Pet");
+                    b.ToTable("Pets","Pet");
                 });
 
             modelBuilder.Entity("PetStore.Models.PetType", b =>
@@ -187,7 +189,7 @@ namespace PetStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PetType");
+                    b.ToTable("PetTypes","Pets");
                 });
 
             modelBuilder.Entity("PetStore.Models.Product", b =>
@@ -195,7 +197,8 @@ namespace PetStore.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CategoryId");
+                    b.Property<int?>("CategoryId")
+                        .IsRequired();
 
                     b.Property<string>("Description");
 
@@ -203,14 +206,13 @@ namespace PetStore.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int>("Price");
+                    b.Property<double>("Price");
 
                     b.Property<string>("ProductCode");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products","Product");
                 });
@@ -222,11 +224,7 @@ namespace PetStore.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("SubCategoryId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SubCategoryId");
 
                     b.ToTable("Category","Product");
                 });
@@ -244,20 +242,22 @@ namespace PetStore.Migrations
                     b.ToTable("Images","Product");
                 });
 
-            modelBuilder.Entity("PetStore.Models.ProductTag", b =>
+            modelBuilder.Entity("PetStore.Models.ProductSubCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ProductId");
+                    b.Property<int>("MainCategoryId");
 
-                    b.Property<string>("Tag");
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Value");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("MainCategoryId");
 
-                    b.ToTable("Tags","Product");
+                    b.ToTable("SubCategories","Product");
                 });
 
             modelBuilder.Entity("PetStore.Models.Provider", b =>
@@ -351,8 +351,6 @@ namespace PetStore.Migrations
                     b.Property<string>("Gender")
                         .HasAnnotation("MaxLength", 1);
 
-                    b.Property<int>("ImageId");
-
                     b.Property<string>("IsActive")
                         .HasAnnotation("MaxLength", 1);
 
@@ -383,7 +381,7 @@ namespace PetStore.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
-                    b.Property<int>("UserAddressesId");
+                    b.Property<int>("UserAddressId");
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
@@ -411,10 +409,6 @@ namespace PetStore.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<string>("IsDefaultBillingAddress");
-
-                    b.Property<string>("IsDefaultShippingAddress");
-
                     b.Property<string>("Province");
 
                     b.Property<string>("State");
@@ -427,26 +421,10 @@ namespace PetStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserAccountId");
-
-                    b.ToTable("Addresses","User");
-                });
-
-            modelBuilder.Entity("PetStore.Models.UserImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<byte[]>("Image");
-
-                    b.Property<int>("UserAccountId");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("UserAccountId")
                         .IsUnique();
 
-                    b.ToTable("Images","User");
+                    b.ToTable("Addresses","User");
                 });
 
             modelBuilder.Entity("PetStore.Models.UserRole", b =>
@@ -540,29 +518,20 @@ namespace PetStore.Migrations
             modelBuilder.Entity("PetStore.Models.Pet", b =>
                 {
                     b.HasOne("PetStore.Models.PetType", "Type")
-                        .WithMany("Pets")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithOne("Pet")
+                        .HasForeignKey("PetStore.Models.Pet", "TypeId");
 
                     b.HasOne("PetStore.Models.UserAccount", "UserAccount")
-                        .WithMany("Pets")
-                        .HasForeignKey("UserAccountId")
+                        .WithOne("Pet")
+                        .HasForeignKey("PetStore.Models.Pet", "UserAccountId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PetStore.Models.Product", b =>
                 {
                     b.HasOne("PetStore.Models.ProductCategory", "Category")
-                        .WithOne()
-                        .HasForeignKey("PetStore.Models.Product", "CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("PetStore.Models.ProductCategory", b =>
-                {
-                    b.HasOne("PetStore.Models.ProductCategory", "SubCategory")
-                        .WithMany()
-                        .HasForeignKey("SubCategoryId");
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("PetStore.Models.ProductImage", b =>
@@ -573,11 +542,11 @@ namespace PetStore.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("PetStore.Models.ProductTag", b =>
+            modelBuilder.Entity("PetStore.Models.ProductSubCategory", b =>
                 {
-                    b.HasOne("PetStore.Models.Product", "Product")
-                        .WithMany("Tags")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("PetStore.Models.ProductCategory", "MainCategory")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("MainCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -618,16 +587,8 @@ namespace PetStore.Migrations
             modelBuilder.Entity("PetStore.Models.UserAddress", b =>
                 {
                     b.HasOne("PetStore.Models.UserAccount", "UserAccount")
-                        .WithMany("UserAddresses")
-                        .HasForeignKey("UserAccountId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("PetStore.Models.UserImage", b =>
-                {
-                    b.HasOne("PetStore.Models.UserAccount", "UserAccount")
-                        .WithOne("Image")
-                        .HasForeignKey("PetStore.Models.UserImage", "UserAccountId")
+                        .WithOne("UserAddress")
+                        .HasForeignKey("PetStore.Models.UserAddress", "UserAccountId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

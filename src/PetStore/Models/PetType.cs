@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PetStore.Models
+﻿namespace PetStore.Models
 {
     public class PetType
     {

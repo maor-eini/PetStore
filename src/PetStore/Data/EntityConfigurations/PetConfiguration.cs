@@ -17,12 +17,12 @@ namespace PetStore.EntityConfigurations
                 .WithOne(pt => pt.Pet)
                 .HasForeignKey<Pet>(p => p.TypeId)
                 .HasPrincipalKey<PetType>(pt => pt.Id)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         public static void ConfigurePetType(this EntityTypeBuilder<PetType> b)
         {
-            b.ToTable("Pets", "PetTypes");
+            b.ToTable("PetTypes", "Pets");
 
             b.HasKey(p => p.Id);
         }

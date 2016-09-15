@@ -1,11 +1,14 @@
-﻿namespace PetStore.Models
+﻿using System.Collections.Generic;
+
+namespace PetStore.Models
 {
     public class ProductCategory
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public int? SubCategoryId { get; set; }
-        public ProductCategory SubCategory { get; set; }
+        public ICollection<Product> Products { get; set; }
+        public ICollection<ProductSubCategory> SubCategories { get; set; }
+
     }
 }

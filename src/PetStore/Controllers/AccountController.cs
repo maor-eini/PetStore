@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using PetStore.Models;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using PetStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using PetStore.Data.Repositories.Interfaces;
-using AutoMapper;
 
 namespace PetStore.Controllers
 {

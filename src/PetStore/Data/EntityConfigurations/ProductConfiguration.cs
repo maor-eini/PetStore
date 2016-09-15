@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetStore.Models;
 
@@ -13,20 +14,16 @@ namespace PetStore.EntityConfigurations
             b.HasKey(o => o.Id);
 
             b.HasOne(p => p.Category)
-                .WithOne()
+                .WithMany(pc => pc.Products)
                 .IsRequired()
-                .HasForeignKey<Product>(p => p.CategoryId)
-                .HasPrincipalKey<ProductCategory>(pc => pc.Id);
+                .HasForeignKey(p => p.CategoryId)
+                .HasPrincipalKey(pc => pc.Id)
+                .OnDelete(DeleteBehavior.Restrict);
 
             b.HasMany(p => p.Images)
                 .WithOne(pi => pi.Product)
                 .IsRequired()
                 .HasForeignKey(pi => pi.Id);
-
-            b.HasMany(p => p.Tags)
-                .WithOne(pt => pt.Product)
-                .IsRequired()
-                .HasForeignKey(pt => pt.ProductId);
         }
 
         public static void ConfigureProductCategory(this EntityTypeBuilder<ProductCategory> b)
@@ -35,6 +32,18 @@ namespace PetStore.EntityConfigurations
 
             b.HasKey(pc => pc.Id);
 
+            b.HasMany(pc => pc.SubCategories)
+                .WithOne(psc => psc.MainCategory)
+                .HasForeignKey(psc => psc.MainCategoryId)
+                .HasPrincipalKey(pc => pc.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
+        public static void ConfigureProductSubCategory(this EntityTypeBuilder<ProductSubCategory> b)
+        {
+            b.ToTable("SubCategories", "Product");
+
+            b.HasKey(psc => psc.Id);
         }
 
         public static void ConfigureProductImage(this EntityTypeBuilder<ProductImage> b)
@@ -42,14 +51,6 @@ namespace PetStore.EntityConfigurations
             b.ToTable("Images", "Product");
 
             b.HasKey(pc => pc.Id);           
-        }
-
-        public static void ConfigureProductTag(this EntityTypeBuilder<ProductTag> b)
-        {
-            b.ToTable("Tags", "Product");
-
-            b.HasKey(pc => pc.Id);
-
         }
     }
 }

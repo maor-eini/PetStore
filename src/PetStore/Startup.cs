@@ -12,6 +12,7 @@ using PetStore.Data.Repositories.Interfaces;
 using PetStore.Data.UnitOfWork;
 using PetStore.Models;
 using PetStore.ViewModels;
+using System;
 using System.IO;
 
 namespace PetStore
@@ -56,6 +57,7 @@ namespace PetStore
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPetRepository, PetRepository>();
+            services.AddScoped<IPetTypeRepository, PetTypeRepository>();
             services.AddScoped<IUserAddressRepository, UserAddressRepository>();
             services.AddTransient<PetStoreContextSeedData>();
 
@@ -63,11 +65,14 @@ namespace PetStore
             Mapper.Initialize(config =>
             {
                 config.CreateMap<AccountFormViewModel, UserAccount>()
-                .ForMember(ua => ua.UserName, opt=>opt.MapFrom(p=>p.Email))
+                .ForMember(ua => ua.UserName, opt=>opt.MapFrom(af=>af.Email))
+                .ForMember(ua=>ua.DateAdded,opt=>opt.UseValue(DateTime.Now))
+                .ForMember(ua => ua.LastUpdated, opt => opt.UseValue(DateTime.Now))
                 .ReverseMap();
 
                 config.CreateMap<PetFormViewModel, Pet>()
                 .ForMember(p=>p.Type,opt => opt.Ignore())
+                .ForMember(p=>p.TypeId, opt=>opt.MapFrom(pf=>int.Parse(pf.TypeId)))
                 .ReverseMap();
 
                 config.CreateMap<AddressFormViewModel, UserAddress>().ReverseMap();

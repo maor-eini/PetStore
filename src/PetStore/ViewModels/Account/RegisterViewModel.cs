@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PetStore.ViewModels
+﻿namespace PetStore.ViewModels
 {
     public class RegisterViewModel
     {

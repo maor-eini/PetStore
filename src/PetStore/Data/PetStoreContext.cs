@@ -7,17 +7,23 @@ namespace PetStore.Data
 {
     public class PetStoreContext : IdentityDbContext<UserAccount, UserRole , int>
     {
+        public DbSet<UserAddress> UserAddress { get; set; }
+
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
-        public DbSet<ProductTag> ProductTags { get; set; }
+
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<OrderStatus> OrderStatus { get; set; }
+
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+
         public DbSet<Provider> Providers { get; set; }
         public DbSet<ProviderItem> ProviderItems { get; set; }
+
         public DbSet<Pet> Pets { get; set; }
         public DbSet<PetType> PetTypes { get; set; }
 
@@ -62,7 +68,7 @@ namespace PetStore.Data
 
             builder.Entity<ProductCategory>().ConfigureProductCategory();
 
-            builder.Entity<ProductTag>().ConfigureProductTag();
+            builder.Entity<ProductSubCategory>().ConfigureProductSubCategory();
 
 
             builder.Entity<Order>().ConfigureOrder();

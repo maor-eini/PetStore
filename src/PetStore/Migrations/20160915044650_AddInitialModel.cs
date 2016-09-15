@@ -15,7 +15,10 @@ namespace PetStore.Migrations
                 name: "Order");
 
             migrationBuilder.EnsureSchema(
-                name: "ApplicationData");
+                name: "Pet");
+
+            migrationBuilder.EnsureSchema(
+                name: "Pets");
 
             migrationBuilder.EnsureSchema(
                 name: "Product");
@@ -40,7 +43,7 @@ namespace PetStore.Migrations
 
             migrationBuilder.CreateTable(
                 name: "OrderStatus",
-                schema: "ApplicationData",
+                schema: "Order",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -53,8 +56,8 @@ namespace PetStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PetType",
-                schema: "ApplicationData",
+                name: "PetTypes",
+                schema: "Pets",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -63,7 +66,7 @@ namespace PetStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PetType", x => x.Id);
+                    table.PrimaryKey("PK_PetTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,19 +76,11 @@ namespace PetStore.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    SubCategoryId = table.Column<int>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Category", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Category_Category_SubCategoryId",
-                        column: x => x.SubCategoryId,
-                        principalSchema: "Product",
-                        principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,7 +113,6 @@ namespace PetStore.Migrations
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     FirstName = table.Column<string>(maxLength: 255, nullable: true),
                     Gender = table.Column<string>(maxLength: 1, nullable: true),
-                    ImageId = table.Column<int>(nullable: false),
                     IsActive = table.Column<string>(maxLength: 1, nullable: true),
                     LastName = table.Column<string>(maxLength: 255, nullable: true),
                     LastUpdated = table.Column<DateTime>(nullable: false),
@@ -132,7 +126,7 @@ namespace PetStore.Migrations
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     SecurityStamp = table.Column<string>(nullable: true),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserAddressesId = table.Column<int>(nullable: false),
+                    UserAddressId = table.Column<int>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true)
                 },
                 constraints: table =>
@@ -167,7 +161,7 @@ namespace PetStore.Migrations
                     Description = table.Column<string>(nullable: true),
                     Manufacturer = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    Price = table.Column<int>(nullable: false),
+                    Price = table.Column<double>(nullable: false),
                     ProductCode = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -176,6 +170,29 @@ namespace PetStore.Migrations
                     table.ForeignKey(
                         name: "FK_Products_Category_CategoryId",
                         column: x => x.CategoryId,
+                        principalSchema: "Product",
+                        principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubCategories",
+                schema: "Product",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MainCategoryId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubCategories_Category_MainCategoryId",
+                        column: x => x.MainCategoryId,
                         principalSchema: "Product",
                         principalTable: "Category",
                         principalColumn: "Id",
@@ -228,8 +245,8 @@ namespace PetStore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pet",
-                schema: "ApplicationData",
+                name: "Pets",
+                schema: "Pet",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -241,16 +258,16 @@ namespace PetStore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pet", x => x.Id);
+                    table.PrimaryKey("PK_Pets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pet_PetType_TypeId",
+                        name: "FK_Pets_PetTypes_TypeId",
                         column: x => x.TypeId,
-                        principalSchema: "ApplicationData",
-                        principalTable: "PetType",
+                        principalSchema: "Pets",
+                        principalTable: "PetTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Pet_Accounts_UserAccountId",
+                        name: "FK_Pets_Accounts_UserAccountId",
                         column: x => x.UserAccountId,
                         principalSchema: "User",
                         principalTable: "Accounts",
@@ -290,8 +307,6 @@ namespace PetStore.Migrations
                     ApartmentNumber = table.Column<string>(nullable: true),
                     BuildingNumber = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
-                    IsDefaultBillingAddress = table.Column<string>(nullable: true),
-                    IsDefaultShippingAddress = table.Column<string>(nullable: true),
                     Province = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     Street = table.Column<string>(nullable: true),
@@ -303,28 +318,6 @@ namespace PetStore.Migrations
                     table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Addresses_Accounts_UserAccountId",
-                        column: x => x.UserAccountId,
-                        principalSchema: "User",
-                        principalTable: "Accounts",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Images",
-                schema: "User",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Image = table.Column<byte[]>(nullable: true),
-                    UserAccountId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Images_Accounts_UserAccountId",
                         column: x => x.UserAccountId,
                         principalSchema: "User",
                         principalTable: "Accounts",
@@ -396,28 +389,6 @@ namespace PetStore.Migrations
                     table.ForeignKey(
                         name: "FK_Images_Products_Id",
                         column: x => x.Id,
-                        principalSchema: "Product",
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tags",
-                schema: "Product",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ProductId = table.Column<int>(nullable: false),
-                    Tag = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tags", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tags_Products_ProductId",
-                        column: x => x.ProductId,
                         principalSchema: "Product",
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -507,7 +478,7 @@ namespace PetStore.Migrations
                     table.ForeignKey(
                         name: "FK_Orders_OrderStatus_StatusId",
                         column: x => x.StatusId,
-                        principalSchema: "ApplicationData",
+                        principalSchema: "Order",
                         principalTable: "OrderStatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -609,29 +580,24 @@ namespace PetStore.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pet_TypeId",
-                schema: "ApplicationData",
-                table: "Pet",
-                column: "TypeId");
+                name: "IX_Pets_TypeId",
+                schema: "Pet",
+                table: "Pets",
+                column: "TypeId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pet_UserAccountId",
-                schema: "ApplicationData",
-                table: "Pet",
-                column: "UserAccountId");
+                name: "IX_Pets_UserAccountId",
+                schema: "Pet",
+                table: "Pets",
+                column: "UserAccountId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 schema: "Product",
                 table: "Products",
-                column: "CategoryId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Category_SubCategoryId",
-                schema: "Product",
-                table: "Category",
-                column: "SubCategoryId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_Id",
@@ -640,10 +606,10 @@ namespace PetStore.Migrations
                 column: "Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_ProductId",
+                name: "IX_SubCategories_MainCategoryId",
                 schema: "Product",
-                table: "Tags",
-                column: "ProductId");
+                table: "SubCategories",
+                column: "MainCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProviderItems_ProductId",
@@ -693,12 +659,6 @@ namespace PetStore.Migrations
                 name: "IX_Addresses_UserAccountId",
                 schema: "User",
                 table: "Addresses",
-                column: "UserAccountId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Images_UserAccountId",
-                schema: "User",
-                table: "Images",
                 column: "UserAccountId",
                 unique: true);
 
@@ -736,15 +696,15 @@ namespace PetStore.Migrations
                 schema: "Order");
 
             migrationBuilder.DropTable(
-                name: "Pet",
-                schema: "ApplicationData");
+                name: "Pets",
+                schema: "Pet");
 
             migrationBuilder.DropTable(
                 name: "Images",
                 schema: "Product");
 
             migrationBuilder.DropTable(
-                name: "Tags",
+                name: "SubCategories",
                 schema: "Product");
 
             migrationBuilder.DropTable(
@@ -756,10 +716,6 @@ namespace PetStore.Migrations
                 schema: "User");
 
             migrationBuilder.DropTable(
-                name: "Images",
-                schema: "User");
-
-            migrationBuilder.DropTable(
                 name: "Roles",
                 schema: "User");
 
@@ -768,8 +724,8 @@ namespace PetStore.Migrations
                 schema: "Order");
 
             migrationBuilder.DropTable(
-                name: "PetType",
-                schema: "ApplicationData");
+                name: "PetTypes",
+                schema: "Pets");
 
             migrationBuilder.DropTable(
                 name: "Providers",
@@ -789,7 +745,7 @@ namespace PetStore.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderStatus",
-                schema: "ApplicationData");
+                schema: "Order");
 
             migrationBuilder.DropTable(
                 name: "Category",

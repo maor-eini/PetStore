@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using PetStore.Data.Repositories.Interfaces;
 using PetStore.Models;
 using PetStore.ViewModels;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -76,8 +76,8 @@ namespace PetStore.Controllers
                 UserForm = new AccountFormViewModel { Heading = "Register to Pet Shop" },
                 PetForm = new PetFormViewModel
                 {
-                    TypeOptions = _petTypeRepository.GetTypeNameList()
-                    .Select(x => new SelectListItem() { Text = x.ToString() })
+                    TypeOptions = _petTypeRepository.GetAll()
+                    .Select(pt => new SelectListItem() { Value = pt.Id.ToString() ,Text = pt.Name })
                 }
             };
 
@@ -92,10 +92,10 @@ namespace PetStore.Controllers
             if (ModelState.IsValid)
             {
                 var user = Mapper.Map<UserAccount>(model.UserForm);
-
-                user.UserName = model.UserForm.Email;
                 user.UserAddress = Mapper.Map<UserAddress>(model.AddressForm);
                 user.Pet = Mapper.Map<Pet>(model.PetForm);
+                user.DateAdded = DateTime.Now;
+                user.LastUpdated = DateTime.Now;
 
                 _petRepository.Add(user.Pet);
                 _userAddressRepository.Add(user.UserAddress);
