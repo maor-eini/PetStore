@@ -8,7 +8,7 @@ using PetStore.Data;
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    [Migration("20160915044650_AddInitialModel")]
+    [Migration("20160915173646_AddInitialModel")]
     partial class AddInitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,8 +199,7 @@ namespace PetStore.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CategoryId")
-                        .IsRequired();
+                    b.Property<int>("CategoryId");
 
                     b.Property<string>("Description");
 

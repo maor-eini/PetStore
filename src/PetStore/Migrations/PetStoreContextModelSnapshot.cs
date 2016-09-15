@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using PetStore.Data;
 
 namespace PetStore.Migrations
@@ -197,8 +198,7 @@ namespace PetStore.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CategoryId")
-                        .IsRequired();
+                    b.Property<int>("CategoryId");
 
                     b.Property<string>("Description");
 
