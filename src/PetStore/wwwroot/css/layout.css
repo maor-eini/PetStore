@@ -1,4 +1,17 @@
-﻿.collapse {
+﻿@font-face {
+    font-family: "Open-Sans";
+    src: url('../fonts/Open-Sans/OpenSans-Regular.ttf');
+}
+
+html, body {
+    font-family: Open-Sans;
+}
+
+.hidden{
+    display:none;
+}
+
+.collapse {
     display: flex;
 }
 
@@ -69,32 +82,36 @@ footer .container li a {
 /*****CAROUSEL*****/
 
 .carousel-inner img {
-    width: 100%
+    width: 100%;
 }
 
 /*POPULAR PRODUCTS*/
 
-.popular-products-container{
-    display:inline-block;
+.popular-products-container {
+    display: inline-block;
 }
 
-.product-container{
+.product-container {
     border: 1px solid grey;
-    margin:20px;
+    margin: 20px;
 }
 
-.popular-products{
+.popular-products {
     width: 100%;
 }
 
-.thumbnail{
-    display:inline-block;
-    margin:20px 10px
+.thumbnail {
+    display: inline-block;
+    margin: 20px 10px;
 }
 
-video{
-    width:600px;
-    margin:10px;
+.price{
+    display:block;
+}
+
+video {
+    width: 600px;
+    margin: 10px;
 }
 
 /*****ABOUT US*****/
@@ -113,3 +130,34 @@ video{
     height: 400px;
     width: 550px;
 }
+
+.fb-page {
+    margin: 20px;
+}
+
+
+/*****Login Page*****/
+
+.login-form-container {
+    margin: 20px;
+}
+
+.login-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.register{
+    margin: 15px 0;
+    display:inline-block
+}
+
+.login-btn{
+    margin-top: 7px;
+}
+
+.remember-me{
+    margin-top:10px;
+}
+
+

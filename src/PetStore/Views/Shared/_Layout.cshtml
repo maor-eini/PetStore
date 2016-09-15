@@ -23,27 +23,28 @@
     <header>
         <div class="logo-panel">
             <ul class="user-menu pull-right list-unstyled list-inline">
-                <li class="pull-left">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <form asp-controller="Auth" asp-action="Logout" method="post">
-                            <a asp-controller="Account" asp-action="Update" asp-route-id=@UserManager.GetUserId(User)>@UserManager.GetUserAsync(User).Result.FirstName</a>
-                            <button type="submit">Log off</button>
-                        </form>
-                        }
-                        else
-                        {
-                            <a asp-controller="Account" asp-action="Login">Log in</a>
-                        }
-                </li>
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="pull-left">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <a class="user-menu-link" asp-controller="Account" asp-action="Update" asp-route-id=@UserManager.GetUserId(User)>@UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="pull-left">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <a class="user-menu-link" asp-controller="Auth" asp-action="Login">Login</a>
+                    </li>
+                }
                 <li class="pull-left">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <a class="user-menu-link" href="#">View Cart</a>
+                    <a class="user-menu-link" href="#">View Cart <span class="cart-items">(<span id="cart-num-items">0</span>)</span></a>
                 </li>
             </ul>
 
-            <img class="logo" src="~/img/layout/logo.jpg" alt="Pet Store" />
+            <a asp-controller="Home" asp-action="Index"><img class="logo" src="~/img/layout/logo.jpg" alt="Pet Store" /></a>
         </div>
         <div class="navbar yamm navbar-default">
             <div class="container">
@@ -135,7 +136,25 @@
                                 </li>
                             </ul>
                         </li>
-
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">MANAGE<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <!-- Content container to add padding -->
+                                        <div class="yamm-content">
+                                            <div class="row">
+                                                <ul class="list-unstyled">
+                                                    <li><a asp-controller="Products" asp-action="Create"> Add Product </a></li>
+                                                    <li><a href="#"> Change Order Status </a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -161,8 +180,8 @@
                     <li>
                         <ul class="list-unstyled">
                             <li class="footer-nav-title">INSIDE PET SHOP</li>
-                            <li><a asp-controller="About">About Pet Shop</a></li>
-                            <li><a asp-controller="ContactDetails">Hours of Operation</a></li>
+                            <li><a asp-controller="About" asp-action="Index">About Pet Shop</a></li>
+                            <li><a asp-controller="ContactDetails" asp-action="Index">Hours of Operation</a></li>
                             <li><a href="#">Contact Us</a></li>
                         </ul>
                     </li>
@@ -171,12 +190,13 @@
                     <li>
                         <ul class="list-unstyled">
                             <li class="footer-nav-title">STAY CONNECTED</li>
-                            <li><a href="#"><i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i></a></li>
+                            <li><a href="https://www.facebook.com/applicationsPetShop/"><i class="fa fa-facebook-square fa-lg" aria-hidden="true"></i></a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </div>
     </footer>
+    <script src="~/js/FacebookIntegration.js"></script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+﻿@model PetStore.ViewModels.Product.ProductFormViewModel
+
+<h2>Add Product</h2>
+<div id="mainContent">
+    @using (Html.BeginForm(FormMethod.Post, true, new { @class = "add-product-form" }))
+    {
+        <span>All the fields are <span id="required">required</span>.</span>
+            <div>
+                @Html.LabelFor(m => m.Name, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.Name, new { autofocus = "autofocus", @class = "formField" })
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Price, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.Price, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.Price)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Manufacturer, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.Manufacturer, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.Manufacturer)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Description, new { @class = "formLabel" })
+                @Html.TextAreaFor(m => m.Description, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.Description)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Categories, new { @class = "formLabel" })
+                @Html.DropDownListFor(m => m.Categories, new SelectList(Model.Categories, "Value", "Text"), new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.Categories)
+            </div>
+            <button type="submit">Save</button>
+    }
+</div>

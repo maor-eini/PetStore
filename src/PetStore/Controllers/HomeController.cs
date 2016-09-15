@@ -13,8 +13,8 @@ namespace PetStore.Controllers
         }
         public IActionResult Index()
         {
-            //var products = _unitOfWork.Products.GetTopSellingProduct(10);
-            return View();
+            var products = _unitOfWork.Products.GetTopSellingProduct(3);
+            return View(products);
         }
 
     }
