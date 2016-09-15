@@ -1,5 +1,7 @@
-﻿using PetStore.Data.Repositories.Interfaces;
+﻿using System;
+using PetStore.Data.Repositories.Interfaces;
 using PetStore.Models;
+using System.Linq;
 
 namespace PetStore.Data.Repositories
 {
@@ -13,6 +15,14 @@ namespace PetStore.Data.Repositories
         public PetStoreContext PetStoreContext
         {
             get { return Context as PetStoreContext; }
+        }
+
+        public ShoppingCart GetShoppingCartByUserId(int userId)
+        {
+            return PetStoreContext.ShoppingCarts
+                .Where(sc => sc.UserAccountId == userId)
+                .OrderByDescending(sc => sc.DateCreated)
+                .FirstOrDefault();
         }
     }
 }
