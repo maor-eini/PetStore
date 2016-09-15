@@ -105,6 +105,10 @@ footer .container li a {
     margin: 20px 10px;
 }
 
+.price{
+    display:block;
+}
+
 video {
     width: 600px;
     margin: 10px;
@@ -155,3 +159,5 @@ video {
 .remember-me{
     margin-top:10px;
 }
+
+

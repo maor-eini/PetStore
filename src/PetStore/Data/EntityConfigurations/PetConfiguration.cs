@@ -14,9 +14,9 @@ namespace PetStore.EntityConfigurations
             b.HasKey(p => p.Id);
 
             b.HasOne(p => p.Type)
-                .WithOne(pt => pt.Pet)
-                .HasForeignKey<Pet>(p => p.TypeId)
-                .HasPrincipalKey<PetType>(pt => pt.Id)
+                .WithMany(pt => pt.Pet)
+                .HasForeignKey(p => p.TypeId)
+                .HasPrincipalKey(pt => pt.Id)
                 .OnDelete(DeleteBehavior.Restrict);
         }
 

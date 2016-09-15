@@ -26,24 +26,17 @@
 
                 @if (SignInManager.IsSignedIn(User))
                 {
-                <li class="pull-left">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <a class="user-menu-link" asp-controller="Account" asp-action="Update" asp-route-id=@UserManager.GetUserId(User)>@UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName</a>
-                </li>
+                    <li class="pull-left">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <a class="user-menu-link" asp-controller="Account" asp-action="Update" asp-route-id=@UserManager.GetUserId(User)>@UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName</a>
+                    </li>
                 }
                 else
                 {
-                <li class="pull-left">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <a class="user-menu-link" asp-controller="Auth" asp-action="Login">Login</a>
-                </li>
-                }
-                @if ("Admin".Equals("Admin"))
-                {
-                <li class="pull-left">
-                    <i class="fa fa-key" aria-hidden="true"></i>
-                    <a class="user-menu-link" asp-controller="Admin" asp-action="Manage">Manage</a>
-                </li>
+                    <li class="pull-left">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <a class="user-menu-link" asp-controller="Auth" asp-action="Login">Login</a>
+                    </li>
                 }
                 <li class="pull-left">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -143,7 +136,25 @@
                                 </li>
                             </ul>
                         </li>
-
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">MANAGE<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <!-- Content container to add padding -->
+                                        <div class="yamm-content">
+                                            <div class="row">
+                                                <ul class="list-unstyled">
+                                                    <li><a asp-controller="Products" asp-action="Create"> Add Product </a></li>
+                                                    <li><a href="#"> Change Order Status </a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

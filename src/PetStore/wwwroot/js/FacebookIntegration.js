@@ -1,12 +1,10 @@
 ﻿
 $(".cart-items").hide();
 
-$("#add-to-cart-btn").click(function (event) {
+$(".add-to-cart-btn").click(function (event) {
     event.preventDefault();
     var prevItems = parseInt($("#cart-num-items").text());
-    console.log(prevItems);
     $("#cart-num-items").html(++prevItems);
-    console.log(prevItems);
     $(".cart-items").show();
 });
 

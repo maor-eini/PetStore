@@ -1,0 +1,25 @@
+﻿@model PetStore.Models.Product
+
+<div>
+    <div class="thumbnail">
+        <img class="img-rounded" src="~/img/products/food/go.jpg" alt="popular-product" />
+        <div class="caption">
+            <div>
+                <a asp-controller="Products" asp-action="Details" asp-route-id=@Model.Id><h4>@Model.Name</h4></a>
+                <span class="price">@Model.Price$</span>
+                <button class="btn add-to-cart-btn btn-primary" role="button">Add To Cart</button>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="delete-product" asp-controller="Products" asp-action="Delete" asp-route-id=@Model.Id><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                }
+            </div>
+            <div>
+                <p>
+                    @Model.Description
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
