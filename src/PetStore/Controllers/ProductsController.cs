@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using PetStore.Models;
 using PetStore.Data.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AutoMapper;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -53,8 +55,7 @@ namespace PetStore.Controllers
         {
             var productForm = new ProductFormViewModel
             {
-                //Categories = _productRepository..GetAll()
-                //    .Select(pt => new SelectListItem() { Value = pt.Id.ToString(), Text = pt.Name })
+                Heading = "Add a new product:"
             };
 
             return View(productForm);
@@ -62,17 +63,27 @@ namespace PetStore.Controllers
 
         // GET: /<controller>/
         [HttpPost]
-        public IActionResult Create(ProductFormViewModel viewModel)
+        public  IActionResult Create(ProductFormViewModel model)
         {
-            
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return View("ProductForm", model);
+            }
+
+            var product = Mapper.Map<Product>(model);
+
+            _productRepository.Add(product);
+
+            return RedirectToAction("Index", "Home");
         }
 
 
         // GET: /<controller>/Update
         public IActionResult Update(int id)
         {
-            return View();
+            var product =_productRepository.GetProductById(id);
+            var productFrom = Mapper.Map<ProductFormViewModel>(product);
+            return View(productFrom);
         }
 
 

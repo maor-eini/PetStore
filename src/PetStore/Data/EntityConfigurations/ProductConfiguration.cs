@@ -20,10 +20,12 @@ namespace PetStore.EntityConfigurations
                 .HasPrincipalKey(pc => pc.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            b.HasMany(p => p.Images)
+            b.HasOne(p => p.Image)
                 .WithOne(pi => pi.Product)
                 .IsRequired()
-                .HasForeignKey(pi => pi.Id);
+                .HasForeignKey<ProductImage>(pi => pi.ProductId)
+                .HasPrincipalKey<Product> (p=>p.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public static void ConfigureProductCategory(this EntityTypeBuilder<ProductCategory> b)
