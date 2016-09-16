@@ -22,6 +22,7 @@ namespace PetStore.Data.Repositories
         {
             return PetStoreContext.ShoppingCarts
                 .Include(sc=> sc.ShoppingCartItems)
+                .ThenInclude(sci => sci.Product)
                 .Where(sc => sc.UserAccountId == userId)
                 .OrderByDescending(sc => sc.DateCreated)
                 .FirstOrDefault();

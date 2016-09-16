@@ -65,7 +65,7 @@ namespace PetStore.Controllers
                     return BadRequest();
                 }
 
-                var cartItem = _unitOfWork.ShoppingCartItems.Find(t=>t.ProductId == id).SingleOrDefault();
+                var cartItem = _unitOfWork.ShoppingCartItems.Find(t => t.ProductId == id && t.ShoppingCartId == cart.Id).SingleOrDefault();
 
                 if (cartItem == null)
                 {
@@ -103,7 +103,7 @@ namespace PetStore.Controllers
 
                 if (cart != null)
                 {
-                    var cartItem = _unitOfWork.ShoppingCartItems.Find(t => t.ProductId == id).SingleOrDefault();
+                    var cartItem = _unitOfWork.ShoppingCartItems.Find(t => t.ProductId == id && t.ShoppingCartId == cart.Id).SingleOrDefault();
                     if (cartItem != null)
                     {
                         cartItem.Quantity = count;
@@ -123,6 +123,15 @@ namespace PetStore.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = _userManager.GetUserAsync(User).Result;
+
+                var cart = _unitOfWork.ShoppingCarts.GetShoppingCartByUserId(user.Id);
+                var cartItem = _unitOfWork.ShoppingCartItems.Find(i => i.ShoppingCartId == cart.Id && i.ProductId == id).SingleOrDefault();
+
+                cart.ShoppingCartItems.Remove(cartItem);
+            }
         }
     }
 }
