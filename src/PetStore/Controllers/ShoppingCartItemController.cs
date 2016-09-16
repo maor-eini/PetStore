@@ -56,7 +56,6 @@ namespace PetStore.Controllers
                     };
 
                     _unitOfWork.ShoppingCarts.Add(cart);
-                    _unitOfWork.Complete();
                 }
 
                 var requestedProduct = _unitOfWork.Products.Find(t => t.Id == id).SingleOrDefault();
@@ -76,7 +75,7 @@ namespace PetStore.Controllers
                         Quantity = 1,
                         ShoppingCart = cart,
                     };
-
+                    cart.ShoppingCartItems.Add(cartItem);
                     _unitOfWork.ShoppingCartItems.Add(cartItem);
                 }
                 else
@@ -128,13 +127,13 @@ namespace PetStore.Controllers
                     cartItem = new ShoppingCartItem
                     {
                         Product = requestedProduct,
-                        Quantity = 1,
+                        Quantity = count,
                         ShoppingCart = cart,
                     };
                 }
                 else
                 {
-                    cartItem.Quantity += 1;
+                    cartItem.Quantity = count;
                 }
 
 

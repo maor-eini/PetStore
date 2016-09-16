@@ -2,6 +2,7 @@
 using PetStore.Data.Repositories.Interfaces;
 using PetStore.Models;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace PetStore.Data.Repositories
 {
@@ -20,6 +21,7 @@ namespace PetStore.Data.Repositories
         public ShoppingCart GetShoppingCartByUserId(int userId)
         {
             return PetStoreContext.ShoppingCarts
+                .Include(sc=> sc.ShoppingCartItems)
                 .Where(sc => sc.UserAccountId == userId)
                 .OrderByDescending(sc => sc.DateCreated)
                 .FirstOrDefault();
