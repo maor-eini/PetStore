@@ -3,28 +3,24 @@
 
 <div>
     <h3>Your Shopping Cart</h3>
-    
-    @if (Model.ShoppingCartItems != null)
-    {
-        @foreach (var item in Model.ShoppingCartItems)
+
+    @*@if (Model.ShoppingCartItems != null)
         {
-            <div class="media">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object" src=@item.Product.Image alt=@item.Product.Name>
-                    </a>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">@item.Product.Name</h4>
-                    <span class="price-span"><span class="price pull-right">@item.Product.Price</span>$</span>
-                </div>
-            </div>
-        }
+            @foreach (var item in Model.ShoppingCartItems)
+            {*@
+    <div class="shopping-cart thumbnail">
+        <h4>Food</h4>
+        <img class="pull-left" src="~/img/products/food/bowls.jpg" alt="product">
+        <div class="price-span center-block"><span class="price">20</span>$</div>
+        <a asp-controller="ShoppingCartItem" asp-action="Delete" asp-route-id="item.Id"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+    </div>
+</div>
+@*}
     }
     else
     {
         <span>There are no items in your cart...</span>
 
-    }
+    }*@
 
 </div>

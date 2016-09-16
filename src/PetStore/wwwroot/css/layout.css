@@ -198,3 +198,20 @@ video {
     margin-top:20px;
 }
 
+
+
+/*****Shopping Cart*****/
+
+.shopping-cart {
+    width:400px;
+    height:250px;
+}
+
+.price-span{
+    display:inline-flex;
+    position:relative;
+}
+
+.quntity{
+    width:27px;
+}
