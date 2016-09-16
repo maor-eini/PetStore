@@ -7,8 +7,10 @@
 //using Microsoft.AspNetCore.Identity;
 //using PetStore.Models;
 //using PetStore.Data.Repositories.Interfaces;
+//using AutoMapper;
+//using Microsoft.AspNetCore.Mvc.Rendering;
 
-//// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+//For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 //namespace PetStore.Controllers
 //{
@@ -19,19 +21,20 @@
 //        private readonly IShoppingCartRepository _shoppingCartRepository;
 //        private readonly IShoppingCartItemRepository _shoppingCartItemRepository;
 
-//        public ShoppingCartController(UserManager<UserAccount> userManager, 
-//            IShoppingCartRepository shoppingCartRepository, 
+//        public ShoppingCartController(UserManager<UserAccount> userManager,
+//            IShoppingCartRepository shoppingCartRepository,
 //            IShoppingCartItemRepository shoppingCartItemRepository)
 //        {
 //            _userManager = userManager;
 //            _shoppingCartRepository = shoppingCartRepository;
 //            _shoppingCartItemRepository = shoppingCartItemRepository;
 //        }
-//        // GET: /<controller>/
+//        GET: /<controller>/
 //        public async Task<IActionResult> Index()
 //        {
 //            var user = await _userManager.GetUserAsync(User);
-//            _shoppingCartRepository.GetShoppingCartByUserId(user.Id);
+//            var cart = _shoppingCartRepository.GetShoppingCartByUserId(user.Id);
+//            cart.
 
 //            if (!HasPermission("VIEW_CUSTOMERS"))
 //            {
