@@ -28,74 +28,12 @@ namespace PetStore.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = _userManager.GetUserAsync(User).Result;
             var cart = _unitOfWork.ShoppingCarts.GetShoppingCartByUserId(user.Id);
 
-            if (!User.Identity.IsAuthenticated || !User.IsInRole("Admin"))
-            {
-                return Unauthorized();
-            }
-
-            return View();
-        }
-
-        [HttpPost]
-        [Route("api/ShoppingCart/{id}")]
-        public StatusCodeResult Create(int productId)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var user = _userManager.GetUserAsync(User).Result;
-                var cart = _unitOfWork.ShoppingCarts.GetShoppingCartByUserId(user.Id);
-                if (cart == null)
-                {
-                    cart = new ShoppingCart
-                    {
-                        DateCreated = DateTime.Now,
-                        UserAccount = user,
-                    };
-
-                    _unitOfWork.ShoppingCarts.Add(cart);
-                    _unitOfWork.Complete();
-                }
-                var newItem = new ShoppingCartItem
-                {
-                    Product = _unitOfWork.Products.Get(productId),
-                    Quantity = 1,
-                    ShoppingCart = cart,
-                };
-
-                cart.ShoppingCartItems = new[] { newItem };
-                _unitOfWork.ShoppingCartItems.Add(newItem);
-                _unitOfWork.Complete();
-
-                return Ok();
-
-            }
-            
-            return BadRequest();
-        }
-
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            
-            return View();
-        }
-
-        public IActionResult Create()
-        {
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ShoppingCartViewModel model)
-        {
-            return View();
+            return View(cart);
         }
 
         public async Task<IActionResult> Edit(int? id)

@@ -7,7 +7,9 @@ $(".add-to-cart-btn").click(function (event) {
     $("#cart-num-items").html(++prevItems);
     $("#cart-num-items").show();
 
-    $.ajax(this.href, {
+
+    $.post({
+        url:this.href,
         success: function (data) {
             console.log("added to cart");
         },
@@ -15,8 +17,6 @@ $(".add-to-cart-btn").click(function (event) {
             console.log("failed to add to cart");
         }
     });
-
-
 });
 
 window.fbAsyncInit = function () {

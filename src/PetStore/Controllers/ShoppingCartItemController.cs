@@ -41,7 +41,7 @@ namespace PetStore.Controllers
 
         // POST api/ShoppingCartItem
         [HttpPost("{id}")]
-        public StatusCodeResult Post(int productId)
+        public StatusCodeResult Post(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -58,15 +58,33 @@ namespace PetStore.Controllers
                     _unitOfWork.ShoppingCarts.Add(cart);
                     _unitOfWork.Complete();
                 }
-                var newItem = new ShoppingCartItem
-                {
-                    Product = _unitOfWork.Products.Get(productId),
-                    Quantity = 1,
-                    ShoppingCart = cart,
-                };
 
-                cart.ShoppingCartItems = new[] { newItem };
-                _unitOfWork.ShoppingCartItems.Add(newItem);
+                var requestedProduct = _unitOfWork.Products.Find(t => t.Id == id).SingleOrDefault();
+
+                if (requestedProduct==null)
+                {
+                    return BadRequest();
+                }
+
+                var cartItem = _unitOfWork.ShoppingCartItems.Find(t=>t.ProductId == id).SingleOrDefault();
+
+                if (cartItem == null)
+                {
+                    cartItem = new ShoppingCartItem
+                    {
+                        Product = requestedProduct,
+                        Quantity = 1,
+                        ShoppingCart = cart,
+                    };
+                }
+                else
+                {
+                    cartItem.Quantity += 1;
+                }
+
+
+                cart.ShoppingCartItems = new List<ShoppingCartItem> { cartItem };
+                _unitOfWork.ShoppingCartItems.Add(cartItem);
                 _unitOfWork.Complete();
 
                 return Ok();
