@@ -22,14 +22,11 @@ namespace PetStore.Controllers
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IProviderRepository _providerRepository;
         private readonly IProductRepository _productRepository;
-        private readonly IProductCategoryRepository _productCategoryRepository;
         public ProductsController(
             UserManager<UserAccount> userManager,
             SignInManager<UserAccount> signInManager,
             IProviderRepository providerRepository,
-            IProductRepository productRepository,
-
-            IUserAddressRepository productCategoryRepository)
+            IProductRepository productRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,9 +38,8 @@ namespace PetStore.Controllers
         [AllowAnonymous]
         public IActionResult List(string category, string sub)
         {
-            //var products = _productRepository.Find(p => p.Category.Name.Equals(category) &&
-            //    p.Category.SubCategories.;
-            return View();
+            var products = _productRepository.Find(p => p.Category == category && p.SubCategory == sub);
+            return View(products);
         }
 
         [AllowAnonymous]
@@ -57,7 +53,7 @@ namespace PetStore.Controllers
         {
             var productForm = new ProductFormViewModel
             {
-                Heading = "Add New Product"
+                Heading = "Add New Product",
             };
 
             return View(productForm);

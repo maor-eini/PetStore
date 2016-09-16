@@ -16,7 +16,7 @@ namespace PetStore.ViewModels.Product
         public string Manufacturer { get; set; }
         public string Image { get; set; }
         public string Category { get; set; }
-        public int SubCategory { get; set; }
+        public string SubCategory { get; set; }
 
     }
 }

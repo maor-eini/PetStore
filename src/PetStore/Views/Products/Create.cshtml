@@ -26,9 +26,19 @@
                 @Html.ValidationMessageFor(m => m.Description)
             </div>
             <div>
-                @Html.LabelFor(m => m.Categories, new { @class = "formLabel" })
-                @Html.DropDownListFor(m => m.Categories, new SelectList(Model.Categories, "Value", "Text"), new { @class = "formField" })
-                @Html.ValidationMessageFor(m => m.Categories)
+                @Html.LabelFor(m => m.Category, new { @class = "formLabel" })
+                @Html.DropDownListFor(m => m.Category, new List<SelectListItem> { new SelectListItem { Text= "Dog" , Value="Dog"} , new SelectListItem { Text="Cat" , Value = "Cat"} }, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.Category)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.SubCategory, new { @class = "formLabel" })
+                @Html.DropDownListFor(m => m.SubCategory, new List<SelectListItem> { new SelectListItem { Text = "Food", Value = "Food" }, new SelectListItem { Text = "Bowls", Value = "Bowls" } }, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.SubCategory)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.Image, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.Image, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.Image)
             </div>
             <button type="submit">Save</button>
     }

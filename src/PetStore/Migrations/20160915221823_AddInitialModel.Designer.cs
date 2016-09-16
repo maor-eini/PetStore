@@ -8,7 +8,7 @@ using PetStore.Data;
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    [Migration("20160915173646_AddInitialModel")]
+    [Migration("20160915221823_AddInitialModel")]
     partial class AddInitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,8 +173,7 @@ namespace PetStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId")
-                        .IsUnique();
+                    b.HasIndex("TypeId");
 
                     b.HasIndex("UserAccountId")
                         .IsUnique();
@@ -199,9 +198,11 @@ namespace PetStore.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CategoryId");
+                    b.Property<string>("Category");
 
                     b.Property<string>("Description");
+
+                    b.Property<string>("Image");
 
                     b.Property<string>("Manufacturer");
 
@@ -211,54 +212,11 @@ namespace PetStore.Migrations
 
                     b.Property<string>("ProductCode");
 
-                    b.HasKey("Id");
+                    b.Property<string>("SubCategory");
 
-                    b.HasIndex("CategoryId");
+                    b.HasKey("Id");
 
                     b.ToTable("Products","Product");
-                });
-
-            modelBuilder.Entity("PetStore.Models.ProductCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category","Product");
-                });
-
-            modelBuilder.Entity("PetStore.Models.ProductImage", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<byte[]>("Image");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id");
-
-                    b.ToTable("Images","Product");
-                });
-
-            modelBuilder.Entity("PetStore.Models.ProductSubCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("MainCategoryId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MainCategoryId");
-
-                    b.ToTable("SubCategories","Product");
                 });
 
             modelBuilder.Entity("PetStore.Models.Provider", b =>
@@ -519,35 +477,12 @@ namespace PetStore.Migrations
             modelBuilder.Entity("PetStore.Models.Pet", b =>
                 {
                     b.HasOne("PetStore.Models.PetType", "Type")
-                        .WithOne("Pet")
-                        .HasForeignKey("PetStore.Models.Pet", "TypeId");
+                        .WithMany("Pet")
+                        .HasForeignKey("TypeId");
 
                     b.HasOne("PetStore.Models.UserAccount", "UserAccount")
                         .WithOne("Pet")
                         .HasForeignKey("PetStore.Models.Pet", "UserAccountId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("PetStore.Models.Product", b =>
-                {
-                    b.HasOne("PetStore.Models.ProductCategory", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
-                });
-
-            modelBuilder.Entity("PetStore.Models.ProductImage", b =>
-                {
-                    b.HasOne("PetStore.Models.Product", "Product")
-                        .WithMany("Images")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("PetStore.Models.ProductSubCategory", b =>
-                {
-                    b.HasOne("PetStore.Models.ProductCategory", "MainCategory")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("MainCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
