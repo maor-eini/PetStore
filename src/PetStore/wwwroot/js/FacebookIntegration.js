@@ -1,9 +1,16 @@
 ﻿
-$("#cart-num-items").hide();
+$(document).ready(function () {
+    $("#cart-num-items").hide();
+    var numItems = localStorage['cart-num-items'];
+    if(!numItems)
+        localStorage['cart-num-items'] = 0;
+});
+
+
 
 $(".add-to-cart-btn").click(function (event) {
     event.preventDefault();
-    var prevItems = parseInt($("#cart-num-items").text());
+    var prevItems = parseInt(localStorage['cart-num-items']);
     $("#cart-num-items").html(++prevItems);
     $("#cart-num-items").show();
 

@@ -33,7 +33,7 @@ namespace PetStore.Controllers
             var user = _userManager.GetUserAsync(User).Result;
             var cart = _unitOfWork.ShoppingCarts.GetShoppingCartByUserId(user.Id);
 
-            return View(cart);
+            return View(cart ?? new ShoppingCart());
         }
 
         public async Task<IActionResult> Edit(int? id)

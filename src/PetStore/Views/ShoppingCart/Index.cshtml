@@ -4,18 +4,27 @@
 <div>
     <h3>Your Shopping Cart</h3>
     
-    @foreach (var item in Model.ShoppingCartItems)
+    @if (Model.ShoppingCartItems != null)
     {
-        <div class="media">
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src=@item.Product.Image alt=@item.Product.Name>
-                </a>
+        @foreach (var item in Model.ShoppingCartItems)
+        {
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object" src=@item.Product.Image alt=@item.Product.Name>
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">@item.Product.Name</h4>
+                    <span class="price-span"><span class="price pull-right">@item.Product.Price</span>$</span>
+                </div>
             </div>
-            <div class="media-body">
-                <h4 class="media-heading">@item.Product.Name</h4>
-                <span class="price-span"><span class="price pull-right">@item.Product.Price</span>$</span>
-            </div>
-        </div>
+        }
     }
+    else
+    {
+        <span>There are no items in your cart...</span>
+
+    }
+
 </div>
