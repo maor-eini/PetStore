@@ -45,7 +45,7 @@ namespace PetStore.Controllers
         [AllowAnonymous]
         public IActionResult Details(int id)
         {
-            return View(_productRepository.Find(p => p.Id == id).Single());
+            return View(_productRepository.Find(p => p.Id == id).SingleOrDefault());
         }
 
         // GET: /<controller>/

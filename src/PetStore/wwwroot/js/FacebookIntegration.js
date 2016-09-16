@@ -6,6 +6,17 @@ $(".add-to-cart-btn").click(function (event) {
     var prevItems = parseInt($("#cart-num-items").text());
     $("#cart-num-items").html(++prevItems);
     $("#cart-num-items").show();
+
+    $.ajax(this.href, {
+        success: function (data) {
+            console.log("added to cart");
+        },
+        error: function () {
+            console.log("failed to add to cart");
+        }
+    });
+
+
 });
 
 window.fbAsyncInit = function () {
