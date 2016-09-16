@@ -60,7 +60,7 @@ namespace PetStore.Controllers
 
                 var requestedProduct = _unitOfWork.Products.Find(t => t.Id == id).SingleOrDefault();
 
-                if (requestedProduct==null)
+                if (requestedProduct == null)
                 {
                     return BadRequest();
                 }
@@ -110,8 +110,8 @@ namespace PetStore.Controllers
                         _unitOfWork.Complete();
 
                         return Ok();
-                    } 
-                    
+                    }
+
                 }
 
             }
@@ -120,8 +120,9 @@ namespace PetStore.Controllers
         }
 
         // DELETE api/ShoppingCartItem/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet]
+        [Route("[controller]/Delete/{id}")]
+        public IActionResult Delete(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -131,7 +132,11 @@ namespace PetStore.Controllers
                 var cartItem = _unitOfWork.ShoppingCartItems.Find(i => i.ShoppingCartId == cart.Id && i.ProductId == id).SingleOrDefault();
 
                 cart.ShoppingCartItems.Remove(cartItem);
+
+
             }
+
+            return RedirectToAction("Index", "ShoppingCart");
         }
     }
 }

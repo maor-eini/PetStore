@@ -55,12 +55,6 @@ namespace PetStore.Controllers
             return View();
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
-        {
-            return RedirectToAction("Index");
-        }
     }
 
 
