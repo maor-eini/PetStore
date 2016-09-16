@@ -101,47 +101,18 @@ namespace PetStore.Controllers
                 var user = _userManager.GetUserAsync(User).Result;
                 var cart = _unitOfWork.ShoppingCarts.GetShoppingCartByUserId(user.Id);
 
-                if (cart == null)
+                if (cart != null)
                 {
-                    cart = new ShoppingCart
+                    var cartItem = _unitOfWork.ShoppingCartItems.Find(t => t.ProductId == id).SingleOrDefault();
+                    if (cartItem != null)
                     {
-                        DateCreated = DateTime.Now,
-                        UserAccount = user,
-                    };
+                        cartItem.Quantity = count;
+                        _unitOfWork.Complete();
 
-                    _unitOfWork.ShoppingCarts.Add(cart);
-                    _unitOfWork.Complete();
+                        return Ok();
+                    } 
+                    
                 }
-
-                var requestedProduct = _unitOfWork.Products.Find(t => t.Id == id).SingleOrDefault();
-
-                if (requestedProduct == null)
-                {
-                    return BadRequest();
-                }
-
-                var cartItem = _unitOfWork.ShoppingCartItems.Find(t => t.ProductId == id).SingleOrDefault();
-
-                if (cartItem == null)
-                {
-                    cartItem = new ShoppingCartItem
-                    {
-                        Product = requestedProduct,
-                        Quantity = count,
-                        ShoppingCart = cart,
-                    };
-                }
-                else
-                {
-                    cartItem.Quantity = count;
-                }
-
-
-                cart.ShoppingCartItems = new List<ShoppingCartItem> { cartItem };
-                _unitOfWork.ShoppingCartItems.Add(cartItem);
-                _unitOfWork.Complete();
-
-                return Ok();
 
             }
 
