@@ -2,7 +2,7 @@
 $(document).ready(function () {
     var numItems = sessionStorage.getItem('cart-num-items');
     console.log(numItems);
-    if (!numItems || numItems === 0) {
+    if (!numItems || numItems == 0) {
         console.log("in if")
         sessionStorage.setItem('cart-num-items', 0);
         $("#cart-num-items").hide();

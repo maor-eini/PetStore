@@ -132,7 +132,7 @@ namespace PetStore.Controllers
                 var cartItem = _unitOfWork.ShoppingCartItems.Find(i => i.ShoppingCartId == cart.Id && i.ProductId == id).SingleOrDefault();
 
                 cart.ShoppingCartItems.Remove(cartItem);
-
+                _unitOfWork.Complete();
 
             }
 

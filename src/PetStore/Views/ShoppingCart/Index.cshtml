@@ -4,23 +4,21 @@
 <div>
     <h3>Your Shopping Cart</h3>
 
-    @*@if (Model.ShoppingCartItems != null)
+    @if (Model.ShoppingCartItems != null)
+    {
+        @foreach (var item in Model.ShoppingCartItems)
         {
-            @foreach (var item in Model.ShoppingCartItems)
-            {*@
-    <div class="shopping-cart thumbnail">
-        <h4>Food</h4>
-        <img class="pull-left" src="~/img/products/food/bowls.jpg" alt="product">
-        <div class="price-span center-block"><span class="price">20</span>$</div>
-        <a asp-controller="ShoppingCartItem" asp-action="Delete" asp-route-id="item.Id"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
-    </div>
-</div>
-@*}
+            <div class="shopping-cart thumbnail">
+                <h4>@item.Product.Name</h4>
+                <img class="pull-left" src="@item.Product.Image" alt="product">
+                <div class="price-span center-block"><span class="price">@item.Product.Price</span>$</div>
+                <a asp-controller="ShoppingCartItem" asp-action="Delete" asp-route-id=@item.ProductId><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+            </div>
+        }
     }
     else
     {
         <span>There are no items in your cart...</span>
 
-    }*@
-
+    }
 </div>
