@@ -49,7 +49,7 @@
                     <div class="caption">
                         <a asp-controller="Products" asp-action="Details" asp-route-id=@item.Id><h4>@item.Name</h4></a>
                         <span class="price">@item.Price$</span>
-                        <a asp-controller="ShoppingCart" asp-action="Create" asp-route-id=@item.Id class="btn add-to-cart-btn btn-primary" role="button">Add To Cart</a>
+                        <a asp-controller="ShoppingCartItem" asp-action="Post" asp-route-id=@item.Id class="btn add-to-cart-btn btn-primary" role="button">Add To Cart</a>
                         @if (User.IsInRole("Admin"))
                         {
                             <a class="delete-product" asp-controller="Products" asp-action="Delete" asp-route-id=@item.Id><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
