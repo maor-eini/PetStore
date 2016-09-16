@@ -52,7 +52,7 @@ namespace PetStore.Controllers
                     cart = new ShoppingCart
                     {
                         DateCreated = DateTime.Now,
-                        UserAccount = user,
+                        UserAccount = user
                     };
 
                     _unitOfWork.ShoppingCarts.Add(cart);
@@ -67,6 +67,61 @@ namespace PetStore.Controllers
                 }
 
                 var cartItem = _unitOfWork.ShoppingCartItems.Find(t=>t.ProductId == id).SingleOrDefault();
+
+                if (cartItem == null)
+                {
+                    cartItem = new ShoppingCartItem
+                    {
+                        Product = requestedProduct,
+                        Quantity = 1,
+                        ShoppingCart = cart,
+                    };
+
+                    _unitOfWork.ShoppingCartItems.Add(cartItem);
+                }
+                else
+                {
+                    cartItem.Quantity += 1;
+                }
+
+                _unitOfWork.Complete();
+
+                return Ok();
+
+            }
+
+            return BadRequest();
+        }
+
+        // PUT api/ShoppingCartItem/5/1
+        [HttpPut("{id}/{count}")]
+        public StatusCodeResult Put(int id, int count)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = _userManager.GetUserAsync(User).Result;
+                var cart = _unitOfWork.ShoppingCarts.GetShoppingCartByUserId(user.Id);
+
+                if (cart == null)
+                {
+                    cart = new ShoppingCart
+                    {
+                        DateCreated = DateTime.Now,
+                        UserAccount = user,
+                    };
+
+                    _unitOfWork.ShoppingCarts.Add(cart);
+                    _unitOfWork.Complete();
+                }
+
+                var requestedProduct = _unitOfWork.Products.Find(t => t.Id == id).SingleOrDefault();
+
+                if (requestedProduct == null)
+                {
+                    return BadRequest();
+                }
+
+                var cartItem = _unitOfWork.ShoppingCartItems.Find(t => t.ProductId == id).SingleOrDefault();
 
                 if (cartItem == null)
                 {
@@ -92,12 +147,6 @@ namespace PetStore.Controllers
             }
 
             return BadRequest();
-        }
-
-        // PUT api/ShoppingCartItem/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
         }
 
         // DELETE api/ShoppingCartItem/5
