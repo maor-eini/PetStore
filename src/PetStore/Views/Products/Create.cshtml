@@ -21,6 +21,11 @@
                 @Html.ValidationMessageFor(m => m.Manufacturer)
             </div>
             <div>
+                @Html.LabelFor(m => m.ProductCode, new { @class = "formLabel" })
+                @Html.TextBoxFor(m => m.ProductCode, new { @class = "formField" })
+                @Html.ValidationMessageFor(m => m.ProductCode)
+            </div>
+            <div>
                 @Html.LabelFor(m => m.Description, new { @class = "formLabel" })
                 @Html.TextAreaFor(m => m.Description, new { @class = "formField" })
                 @Html.ValidationMessageFor(m => m.Description)

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PetStore.Data.Repositories.Interfaces;
+using PetStore.Data.UnitOfWork;
 using PetStore.Models;
 using PetStore.ViewModels;
 using System;
@@ -16,22 +17,16 @@ namespace PetStore.Controllers
     {
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager;
-        private readonly IPetRepository _petRepository;
-        private readonly IPetTypeRepository _petTypeRepository;
-        private readonly IUserAddressRepository _userAddressRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AuthController(
             UserManager<UserAccount> userManager,
             SignInManager<UserAccount> signInManager,
-            IPetRepository petRepository,
-            IPetTypeRepository petTypeRepository,
-            IUserAddressRepository userAddressRepository)
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _petRepository = petRepository;
-            _petTypeRepository = petTypeRepository;
-            _userAddressRepository = userAddressRepository;
+            _unitOfWork = unitOfWork;
         }
 
         [AllowAnonymous]
@@ -76,7 +71,7 @@ namespace PetStore.Controllers
                 UserForm = new AccountFormViewModel { Heading = "Register to Pet Shop" },
                 PetForm = new PetFormViewModel
                 {
-                    TypeOptions = _petTypeRepository.GetAll()
+                    TypeOptions = _unitOfWork.PetTypes.GetAll()
                     .Select(pt => new SelectListItem() { Value = pt.Id.ToString() ,Text = pt.Name })
                 }
             };
@@ -97,8 +92,8 @@ namespace PetStore.Controllers
                 user.DateAdded = DateTime.Now;
                 user.LastUpdated = DateTime.Now;
 
-                _petRepository.Add(user.Pet);
-                _userAddressRepository.Add(user.UserAddress);
+                _unitOfWork.Pets.Add(user.Pet);
+                _unitOfWork.UserAddress.Add(user.UserAddress);
 
                 var result = await _userManager.CreateAsync(user, model.UserForm.Password);
                 if (result.Succeeded)

@@ -10,19 +10,31 @@ namespace PetStore.Data.UnitOfWork
         public UnitOfWork(PetStoreContext context)
         {
             _context = context;
+            UserAddress = new UserAddressRepository(_context);
             Products = new ProductRepository(_context);
-            Pets = new PetRepository(_context);
+
             Orders = new OrderRepository(_context);
+            OrderItems = new OrderItemRepository(_context);
+
             ShoppingCarts = new ShoppingCartRepository(_context);
-            Providers = new ProviderRepository(_context);
+            ShoppingCartItems = new ShoppingCartItemRepository(_context);
+
             Pets = new PetRepository(_context);
+            PetTypes = new PetTypeRepository(_context);
         }
 
-        public IProductRepository Products { get; private set; }
-        public IPetRepository Pets { get; private set; }
-        public IOrderRepository Orders { get; private set; }
-        public IShoppingCartRepository ShoppingCarts { get; private set; }
-        public IProviderRepository Providers { get; private set; }
+        public IUserAddressRepository UserAddress { get; set; }
+
+        public IProductRepository Products { get; set; }
+
+        public IOrderRepository Orders { get; set; }
+        public IOrderItemRepository OrderItems { get; set; }
+
+        public IPetRepository Pets { get; set; }
+        public IPetTypeRepository PetTypes { get; set; }
+
+        public IShoppingCartRepository ShoppingCarts { get; set; }
+        public IShoppingCartItemRepository ShoppingCartItems { get; set; }
 
         public int Complete()
         {

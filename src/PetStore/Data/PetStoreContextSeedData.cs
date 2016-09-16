@@ -92,7 +92,8 @@ namespace PetStore.Data
                     ProductCode = "54CD7",
                     Description = "Instinct 5kg for small dogs. Duck.",
                     Category = "Dog",
-                    SubCategory="Food"
+                    SubCategory="Food",
+                    Image = "/img/products/food/go.jpg"
                 };
 
                 var ProductTwo = new Product
@@ -103,7 +104,9 @@ namespace PetStore.Data
                     ProductCode = "54CD8",
                     Description = "Instinct 12kg for large dogs. Duck.",
                     Category = "Dog",
-                    SubCategory="Bowls"
+                    SubCategory="Bowls",
+                    Image = "/img/products/food/bowls.jpg"
+
                 };
 
                 var orderItemOne = new OrderItem

@@ -8,7 +8,7 @@ using PetStore.Data;
 namespace PetStore.Migrations
 {
     [DbContext(typeof(PetStoreContext))]
-    [Migration("20160915221823_AddInitialModel")]
+    [Migration("20160916061901_AddInitialModel")]
     partial class AddInitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

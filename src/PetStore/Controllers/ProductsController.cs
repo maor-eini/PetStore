@@ -10,6 +10,7 @@ using PetStore.Models;
 using PetStore.Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
+using PetStore.Data.UnitOfWork;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,32 +21,29 @@ namespace PetStore.Controllers
     {
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager;
-        private readonly IProviderRepository _providerRepository;
-        private readonly IProductRepository _productRepository;
+        private readonly IUnitOfWork _unitOfWork;
         public ProductsController(
             UserManager<UserAccount> userManager,
             SignInManager<UserAccount> signInManager,
-            IProviderRepository providerRepository,
-            IProductRepository productRepository)
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _providerRepository = providerRepository;
-            _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: /<controller>/
         [AllowAnonymous]
         public IActionResult List(string category, string sub)
         {
-            var products = _productRepository.Find(p => p.Category == category && p.SubCategory == sub);
+            var products = _unitOfWork.Products.Find(p => p.Category == category && p.SubCategory == sub);
             return View(products);
         }
 
         [AllowAnonymous]
         public IActionResult Details(int id)
         {
-            return View(_productRepository.Find(p => p.Id == id).SingleOrDefault());
+            return View(_unitOfWork.Products.Find(p => p.Id == id).Single());
         }
 
         // GET: /<controller>/
@@ -63,14 +61,15 @@ namespace PetStore.Controllers
         [HttpPost]
         public IActionResult Create(ProductFormViewModel model)
         {
-            if (!ModelState.IsValid)
+                if (!ModelState.IsValid)
             {
-                return View("ProductForm", model);
+                return View("Create", model);
             }
 
             var product = Mapper.Map<Product>(model);
 
-            _productRepository.Add(product);
+            _unitOfWork.Products.Add(product);
+            _unitOfWork.Complete();
 
             return RedirectToAction("Index", "Home");
         }
@@ -79,7 +78,7 @@ namespace PetStore.Controllers
         // GET: /<controller>/Update
         public IActionResult Update(int id)
         {
-            var product = _productRepository.GetProductById(id);
+            var product = _unitOfWork.Products.GetProductById(id);
             var productFrom = Mapper.Map<ProductFormViewModel>(product);
             return View(productFrom);
         }
@@ -95,8 +94,9 @@ namespace PetStore.Controllers
         // GET: /<controller>/
         public IActionResult Delete(int id)
         {
-            _productRepository.Remove(_productRepository.Find(p => p.Id == id).Single());
-            return View();
+            _unitOfWork.Products.Remove(_unitOfWork.Products.Find(p => p.Id == id).Single());
+            _unitOfWork.Complete();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

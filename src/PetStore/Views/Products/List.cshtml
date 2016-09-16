@@ -1,20 +1,12 @@
 ﻿@model IEnumerable<PetStore.Models.Product>
 
-<div class="row products-container">
-    @if (Model.Count() != 0)
-    {
-        <h3 class="products-title">@Model.First().Category - @Model.First().SubCategory</h3>
-    }
-    else
-    {
-        <h3 class="products-title">No available products in this category.</h3>
-    }
+<div class="row popular-products-container">
     <div class="col-sm-4 col-md-6 popular-products">
 
         @foreach (var item in Model)
             {
             <div class="thumbnail">
-                <img class="img-rounded" src="~@item.Image" alt="product" />
+                <img class="img-rounded" src="@item.Image" alt="product" />
                 <div class="caption">
                     <a asp-controller="Products" asp-action="Details" asp-route-id=@item.Id><h4>@item.Name</h4></a>
                     <span class="price">@item.Price$</span>

@@ -24,5 +24,13 @@ namespace PetStore.Data.Repositories
                 .OrderByDescending(sc => sc.DateCreated)
                 .FirstOrDefault();
         }
+
+        public ShoppingCart GetShoppingCartProductsByUserId(int userId)
+        {
+            return PetStoreContext.ShoppingCarts
+                    .Where(sc => sc.UserAccountId == userId)
+                    .OrderByDescending(sc => sc.DateCreated)
+                    .FirstOrDefault();
+        }
     }
 }
