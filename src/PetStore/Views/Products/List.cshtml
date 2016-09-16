@@ -1,0 +1,22 @@
+﻿@model IEnumerable<PetStore.Models.Product>
+
+<div class="row popular-products-container">
+    <div class="col-sm-4 col-md-6 popular-products">
+
+        @foreach (var item in Model)
+            {
+            <div class="thumbnail">
+                <img class="img-rounded" src="~/img/products/food/go.jpg" alt="product" />
+                <div class="caption">
+                    <a asp-controller="Products" asp-action="Details" asp-route-id=@item.Id><h4>@item.Name</h4></a>
+                    <span class="price">@item.Price$</span>
+                    <button class="btn add-to-cart-btn btn-primary" role="button">Add To Cart</button>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="delete-product" asp-controller="Products" asp-action="Delete" asp-route-id=@item.Id><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

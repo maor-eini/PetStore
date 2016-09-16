@@ -1,12 +1,21 @@
 ﻿@model PetStore.Models.Product
 
 <div>
-    <div class="thumbnail">
-        <img class="img-rounded" src="~/img/products/food/go.jpg" alt="popular-product" />
-        <div class="caption">
-            <div>
-                <a asp-controller="Products" asp-action="Details" asp-route-id=@Model.Id><h4>@Model.Name</h4></a>
+    <div class="media">
+        <div class="media-left media-middle">
+            <img class="media-object" src="~/img/products/food/go.jpg" alt="product">
+        </div>
+        <div class="media-body">
+            <div class="col-md-6">
+                <h4 class="media-heading">@Model.Name</h4>
+                <p>
+                    @Model.Description
+                    There are several ways to form text for display. A segment display uses lines, while a dot-matrix display uses a grid of dots, and both of these are seen in LCD, LED, VFD, and vane/disc types. For split-flap displays, the characters or words are pre-printed, and for nixie tubes the shapes are also pre-formed. In any case, the display elements are controlled by electronics which activate them in the correct physical and temporal sequence to show the desired information.
+
+                    Text displays are used in everything from clocks (clock radios, wristwatches) to variable-message signs (departure boards, intelligent transportation systems), because until the late 2000s, they were (and in many cases still are) the least expensive for their purpose.
+                </p>
                 <span class="price">@Model.Price$</span>
+
                 <button class="btn add-to-cart-btn btn-primary" role="button">Add To Cart</button>
 
                 @if (User.IsInRole("Admin"))
@@ -14,12 +23,6 @@
                     <a class="delete-product" asp-controller="Products" asp-action="Delete" asp-route-id=@Model.Id><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
                 }
             </div>
-            <div>
-                <p>
-                    @Model.Description
-                </p>
-            </div>
         </div>
     </div>
-
 </div>

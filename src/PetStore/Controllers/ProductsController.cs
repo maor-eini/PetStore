@@ -15,21 +15,18 @@ using AutoMapper;
 
 namespace PetStore.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class ProductsController : Controller
     {
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager;
         private readonly IProviderRepository _providerRepository;
         private readonly IProductRepository _productRepository;
-        private readonly IProductCategoryRepository _productCategoryRepository;
         public ProductsController(
             UserManager<UserAccount> userManager,
             SignInManager<UserAccount> signInManager,
             IProviderRepository providerRepository,
-            IProductRepository productRepository,
-
-            IUserAddressRepository productCategoryRepository)
+            IProductRepository productRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -39,15 +36,16 @@ namespace PetStore.Controllers
 
         // GET: /<controller>/
         [AllowAnonymous]
-        public IActionResult List()
+        public IActionResult List(string category, string sub)
         {
-            return View(_productRepository.GetAll());
+            var products = _productRepository.Find(p => p.Category == category && p.SubCategory == sub);
+            return View(products);
         }
 
         [AllowAnonymous]
         public IActionResult Details(int id)
         {
-            return View(_productRepository.Get(id));
+            return View(_productRepository.Find(p => p.Id == id).Single());
         }
 
         // GET: /<controller>/
@@ -55,7 +53,7 @@ namespace PetStore.Controllers
         {
             var productForm = new ProductFormViewModel
             {
-                Heading = "Add a new product:"
+                Heading = "Add New Product",
             };
 
             return View(productForm);
@@ -63,7 +61,7 @@ namespace PetStore.Controllers
 
         // GET: /<controller>/
         [HttpPost]
-        public  IActionResult Create(ProductFormViewModel model)
+        public IActionResult Create(ProductFormViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -81,7 +79,7 @@ namespace PetStore.Controllers
         // GET: /<controller>/Update
         public IActionResult Update(int id)
         {
-            var product =_productRepository.GetProductById(id);
+            var product = _productRepository.GetProductById(id);
             var productFrom = Mapper.Map<ProductFormViewModel>(product);
             return View(productFrom);
         }
@@ -97,6 +95,7 @@ namespace PetStore.Controllers
         // GET: /<controller>/
         public IActionResult Delete(int id)
         {
+            _productRepository.Remove(_productRepository.Find(p => p.Id == id).Single());
             return View();
         }
     }
