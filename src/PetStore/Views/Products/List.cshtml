@@ -6,7 +6,7 @@
         @foreach (var item in Model)
             {
             <div class="thumbnail">
-                <img class="img-rounded" src="~/img/products/food/go.jpg" alt="product" />
+                <img class="img-rounded" src="@item.Image" alt="product" />
                 <div class="caption">
                     <a asp-controller="Products" asp-action="Details" asp-route-id=@item.Id><h4>@item.Name</h4></a>
                     <span class="price">@item.Price$</span>

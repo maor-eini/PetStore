@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PetStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using PetStore.Data.Repositories.Interfaces;
+using PetStore.Data.UnitOfWork;
 
 namespace PetStore.Controllers
 {
@@ -13,18 +14,15 @@ namespace PetStore.Controllers
     {
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager;
-        private readonly IPetRepository _petRepository;
-        private readonly IUserAddressRepository _userAddressRepository;
+        private readonly IUnitOfWork _unitOfWork;
         public AccountController(
             UserManager<UserAccount> userManager, 
             SignInManager<UserAccount> signInManager,
-            IPetRepository petRepository,
-            IUserAddressRepository userAddressRepository)
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _petRepository = petRepository;
-            _userAddressRepository = userAddressRepository;
+            _unitOfWork = unitOfWork;
         }
 
         #region Http GET actions
