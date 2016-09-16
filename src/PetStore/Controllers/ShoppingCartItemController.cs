@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using PetStore.Data.UnitOfWork;
+using PetStore.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,6 +14,17 @@ namespace PetStore.Controllers
     [Route("api/[controller]")]
     public class ShoppingCartItemController : Controller
     {
+
+        private readonly UserManager<UserAccount> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public ShoppingCartItemController(UserManager<UserAccount> userManager,
+            IUnitOfWork unitOfWork)
+        {
+            _userManager = userManager;
+            _unitOfWork = unitOfWork;
+        }
+
         // GET: api/ShoppingCartItem
         [HttpGet]
         public IEnumerable<string> Get()
@@ -26,10 +40,40 @@ namespace PetStore.Controllers
         }
 
         // POST api/ShoppingCartItem
-        [HttpPost]
-        [Route("api/ShoppingCartItem/{id}")]
-        public void Post(string value)
+        [HttpPost("{id}")]
+        public StatusCodeResult Post(int productId)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = _userManager.GetUserAsync(User).Result;
+                var cart = _unitOfWork.ShoppingCarts.GetShoppingCartByUserId(user.Id);
+                if (cart == null)
+                {
+                    cart = new ShoppingCart
+                    {
+                        DateCreated = DateTime.Now,
+                        UserAccount = user,
+                    };
+
+                    _unitOfWork.ShoppingCarts.Add(cart);
+                    _unitOfWork.Complete();
+                }
+                var newItem = new ShoppingCartItem
+                {
+                    Product = _unitOfWork.Products.Get(productId),
+                    Quantity = 1,
+                    ShoppingCart = cart,
+                };
+
+                cart.ShoppingCartItems = new[] { newItem };
+                _unitOfWork.ShoppingCartItems.Add(newItem);
+                _unitOfWork.Complete();
+
+                return Ok();
+
+            }
+
+            return BadRequest();
         }
 
         // PUT api/ShoppingCartItem/5
